@@ -642,16 +642,7 @@ public class MainActivity {
 
     /* //日期转换为时间戳 */
     public static long timeToStamp(String timers) {
-        Date d = new Date();
-        long timeTemp;
-        try {
-            SimpleDateFormat sf = new SimpleDateFormat("yyyy.MM.dd");
-            d = sf.parse(timers);// 日期转换为时间戳
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        timeTemp = d.getTime();
-        return timeTemp;
+        return BrowserUtils.timeToStamp(timers);
     }
 
 
@@ -659,16 +650,11 @@ public class MainActivity {
      * @return 当天零点时间戳
      */
     public static long getTodayZeroTime() {
-        long nowTime =System.currentTimeMillis();
-        return nowTime - (nowTime + TimeZone.getDefault().getRawOffset())% (1000*3600*24);
+        return BrowserUtils.getTodayZeroTime();
     }
 
     public static long timeTomorrowBegin() {
-        return getTodayZeroTime() + 60 * 60 * 24 * 1000;
-
-//        long now = System.currentTimeMillis() / 1000L;
-//        long daySecond = 60 * 60 * 24 * 1000;
-//        return now - (now + 8 * 3600) % daySecond + daySecond;
+        return BrowserUtils.timeTomorrowBegin();
     }
 
     public static String formatProductName(String productNameT) {
