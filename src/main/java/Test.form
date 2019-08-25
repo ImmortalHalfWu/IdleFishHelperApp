@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="Test">
+  <grid id="27dc6" binding="rootPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+    <constraints>
+      <xy x="20" y="20" width="873" height="781"/>
+    </constraints>
+    <properties>
+      <background color="-1"/>
+    </properties>
+    <border type="none"/>
+    <children>
+      <component id="61b14" class="javax.swing.JButton" binding="okButton">
+        <constraints border-constraint="West"/>
+        <properties>
+          <text value="Button"/>
+        </properties>
+      </component>
+      <component id="88347" class="javax.swing.JLabel">
+        <constraints border-constraint="Center"/>
+        <properties>
+          <foreground color="-14214469"/>
+          <text value="撒打算的"/>
+        </properties>
+      </component>
+    </children>
+  </grid>
+</form>

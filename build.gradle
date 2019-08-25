@@ -1,0 +1,25 @@
+plugins {
+    id 'java'
+}
+
+group 'immortal.wu'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile group: 'org.nlpcn', name: 'nlp-lang', version: '1.7.7'
+    compile group: 'org.ansj', name: 'ansj_seg', version: '5.1.6'
+    implementation files('libs/dom4j-2.1.1.jar')
+    implementation files('libs/gson-2.8.2.jar')
+    implementation files('libs/jxbrowser-6.21.jar')
+//    implementation files('libs/jxbrowser-linux64-6.21.jar')
+    implementation files('libs/jxbrowser-mac-6.21.jar')
+//    implementation files('libs/jxbrowser-win32-6.21.jar')
+//    implementation files('libs/jxbrowser-win64-6.21.jar')
+}
