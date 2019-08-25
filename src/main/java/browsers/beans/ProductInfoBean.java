@@ -25,6 +25,10 @@ public class ProductInfoBean {
         this.imgSrcUrls.add(imgSrcUrls);
     }
 
+    public void setImgSrcUrls(List<String> imgSrcUrls) {
+        this.imgSrcUrls = imgSrcUrls;
+    }
+
     public String getYhqUrl() {
         return yhqUrl;
     }

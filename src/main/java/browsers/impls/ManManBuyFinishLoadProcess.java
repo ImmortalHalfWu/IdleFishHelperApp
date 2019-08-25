@@ -13,7 +13,6 @@ import com.teamdev.jxbrowser.chromium.dom.DOMElement;
 import com.teamdev.jxbrowser.chromium.dom.DOMNode;
 import com.teamdev.jxbrowser.chromium.events.FinishLoadingEvent;
 
-import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.List;
 
@@ -28,16 +27,16 @@ public class ManManBuyFinishLoadProcess implements FinishLoadProcessInteface {
     private int manManBuyLoadIndex = 0;
 
     @Override
-    public boolean htmlLoadingOverCanProcess(FinishLoadingEvent event, String url, DOMDocument domDocument, BrowsersInterface browser) {
+    public boolean canProcess(FinishLoadingEvent event, String url, DOMDocument domDocument, BrowsersInterface browser) {
         return url.startsWith(PROCESS_URL_START);
     }
 
     @Override
-    public boolean htmlLoadingOverProcess(List<ProductInfoBean> productInfoBeans,
-                                          FinishLoadingEvent event,
-                                          String url,
-                                          DOMDocument domDocument,
-                                          BrowsersInterface browser) {
+    public boolean process(List<ProductInfoBean> productInfoBeans,
+                           FinishLoadingEvent event,
+                           String url,
+                           DOMDocument domDocument,
+                           BrowsersInterface browser) {
 
         if (url.equals(PROCESS_URL_START)) {
             loadNextWebPage(browser);
@@ -47,14 +46,14 @@ public class ManManBuyFinishLoadProcess implements FinishLoadProcessInteface {
         DOMElement container = domDocument.findElement(By.id("container"));
 
         if (container.getInnerText().contains("没有搜到您要的商品")) {
+
             productInfoBeans.clear();
             productInfoBeans.addAll(productInfoBeanLinkedHashSet);
-            log(productInfoBeans);
-            log("over=========================================================");
-            log("over=========================================================");
-            log("over=========================================================");
             sortProductForPriceAndOrderNum(productInfoBeans);
-            log(productInfoBeans);
+
+            BrowserUtils.logLine();
+            BrowserUtils.log("查找完所有慢慢买商品：总计" + productInfoBeans.size());
+            BrowserUtils.logLine();
 
             FileUtils.fileLinesWrite(FileUtils.FILE_PATH_JSON, new Gson().toJson(productInfoBeans), false);
 
@@ -68,14 +67,14 @@ public class ManManBuyFinishLoadProcess implements FinishLoadProcessInteface {
                 children) {
 
             if (node.getNodeType() == ElementNode) {
-                DOMElement picElement = node.findElement(By.className("pic"));
-                DOMElement imgElement = picElement.findElement(By.tagName("img"));
+//                DOMElement picElement = node.findElement(By.className("pic"));
+//                DOMElement imgElement = picElement.findElement(By.tagName("img"));
                 String imgSrcUrl = "";
-                String yhqUrl = "";
-                String productInfo = "";
+                String yhqUrl;
+                String productInfo;
                 String priceCurrent = "";
                 String priceOld = "";
-                String orderNum = "";
+                String orderNum;
 
                 try {
 
@@ -92,7 +91,10 @@ public class ManManBuyFinishLoadProcess implements FinishLoadProcessInteface {
                     DOMElement goBuyElement = node.findElement(By.className("gobuy"));
                     DOMElement goBuyAElement = goBuyElement.findElement(By.tagName("a"));
                     if ((yhqUrl = goBuyAElement.getAttributes().get("href")).contains("ProductDetail.aspx")) {
-                        throw new IllegalArgumentException("优惠卷URL错误, 放弃此商品" + node.toString());
+                        BrowserUtils.logErroLine();
+                        BrowserUtils.log("优惠卷URL错误, 放弃此商品" + node.getTextContent());
+                        BrowserUtils.logErroLine();
+                        return true;
                     }
 
 
@@ -104,15 +106,12 @@ public class ManManBuyFinishLoadProcess implements FinishLoadProcessInteface {
 
 
                     // ============================两种价格======================================
-                    try {
-//
-                        DOMElement priceCurrentElement = node.findElement(By.className("price-current"));
-                        priceCurrentElement = priceCurrentElement == null ? node.findElement(By.className("price-current-hui")) : priceCurrentElement;
-                        priceCurrent = priceCurrentElement.getInnerText().replace("¥", "").replace("券后价", "");   // 劵后价
-                        priceOld = node.findElement(By.className("price-old")).getInnerText().replace("¥", "");           // 原价
-                    } catch (NullPointerException e) {
-                        e.printStackTrace();
-                    }
+
+                    DOMElement priceCurrentElement = node.findElement(By.className("price-current"));
+                    priceCurrentElement = priceCurrentElement == null ? node.findElement(By.className("price-current-hui")) : priceCurrentElement;
+                    priceCurrent = priceCurrentElement.getInnerText().replace("¥", "").replace("券后价", "");   // 劵后价
+                    priceOld = node.findElement(By.className("price-old")).getInnerText().replace("¥", "");           // 原价
+
 
                     // ============================销量======================================
                     DOMElement yhqleft2 = node.findElement(By.className("yhqleft2"));
@@ -130,9 +129,12 @@ public class ManManBuyFinishLoadProcess implements FinishLoadProcessInteface {
                     productInfoBean.setPriceOld(Double.parseDouble(priceOld));
                     productInfoBean.setProductInfo("【全新包邮】" + productInfo);
                     productInfoBeanLinkedHashSet.add(productInfoBean);
+
                 } catch (Exception e) {
+                    BrowserUtils.logErroLine();
+                    BrowserUtils.log("查找商品数据异常, 放弃此商品 ： " + node.getTextContent());
                     e.printStackTrace();
-                    log(imgSrcUrl +"\t" + "\t"+ yhqUrl +"\t" + "\t"+ productInfo +"\t" + "\t"+ priceCurrent +"\t" + "\t"+ priceOld +"\t" + "\t"+ orderNum);
+                    BrowserUtils.logErroLine();
                 }
 
             }
@@ -149,10 +151,5 @@ public class ManManBuyFinishLoadProcess implements FinishLoadProcessInteface {
 
     private void sortProductForPriceAndOrderNum(List<ProductInfoBean> productInfoBeans) {
         BrowserUtils.sortProductForPriceAndOrderNum(productInfoBeans);
-    }
-
-
-    private static void log(Object info) {
-        BrowserUtils.log(info);
     }
 }

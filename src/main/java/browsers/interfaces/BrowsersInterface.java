@@ -7,5 +7,7 @@ public interface BrowsersInterface {
 
     void loadURL(String url);
     DOMDocument getDOMDocument();
+    void executeJavaScriptAndReturnValue(String js);
+    void goBack();
 
 }

@@ -28,14 +28,13 @@ public class FileUtils {
     public final static String FILE_PATH_XML = DIR_PATH_XML + FILE_NAME_XML;
     public final static String FILE_PATH_JSON = DIR_PATH_JSON + FILE_NAME_JSON;
 
-    static {
-//        mkDir(DIR_PATH_IMG);
-//        mkDir(DIR_PATH_XML);
-//        mkDir(DIR_PATH_JSON);
-//        mkFile(FILE_PATH_XML);
-//        mkFile(FILE_PATH_JSON);
+    public static void init() {
+        mkDir(DIR_PATH_IMG);
+        mkDir(DIR_PATH_XML);
+        mkDir(DIR_PATH_JSON);
+        mkFile(FILE_PATH_XML);
+        mkFile(FILE_PATH_JSON);
     }
-
 
     /**
      * 获取windows/linux的项目根目录
@@ -422,6 +421,7 @@ public class FileUtils {
      * @param dir_path
      */
     public static void mkDir(String dir_path) {
+        System.out.println("新建目录操作");
         File myFolderPath = new File(dir_path);
         try {
             if (!myFolderPath.exists()) {

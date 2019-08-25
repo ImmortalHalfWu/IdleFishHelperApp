@@ -5,6 +5,7 @@ import androids.adbs.ADBProcess;
 import androids.impls.*;
 import androids.interfaces.IFishAppProcess;
 import androids.beans.UIPostBean;
+import browsers.BrowserUtils;
 import browsers.beans.ProductInfoBean;
 import com.google.gson.Gson;
 import org.ansj.domain.Term;
@@ -216,15 +217,7 @@ public class AdbTest {
 //    }
 
     public static List<String> findFengCi(String title) {
-        List<Term> terms = ToAnalysis.parse(title).getTerms();
-        HashSet<String> resultList = new HashSet<>(terms.size());
-        for(Term term : terms) {
-            String natureStr = term.getNatureStr();
-            if (natureStr.startsWith("n") || natureStr.startsWith("a") || natureStr.startsWith("b")) {
-                resultList.add(term.getName());
-            }
-        }
-        return new ArrayList<>(resultList);
+        return BrowserUtils.findFengCi(title);
     }
 
     public static void fenciTest() {

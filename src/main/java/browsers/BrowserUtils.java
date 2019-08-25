@@ -2,9 +2,13 @@ package browsers;
 
 import Utils.MLog;
 import browsers.beans.ProductInfoBean;
+import com.teamdev.jxbrowser.chromium.dom.DOMElement;
+import org.ansj.domain.Term;
+import org.ansj.splitWord.analysis.ToAnalysis;
 
-import java.util.Comparator;
-import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class BrowserUtils {
 
@@ -72,7 +76,84 @@ public class BrowserUtils {
 
     }
 
+
+    /* //日期转换为时间戳 */
+    public static long timeToStamp(String timers) {
+        Date d = new Date();
+        long timeTemp;
+        try {
+            SimpleDateFormat sf = new SimpleDateFormat("yyyy.MM.dd");
+            d = sf.parse(timers);// 日期转换为时间戳
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        timeTemp = d.getTime();
+        return timeTemp;
+    }
+
+    /**
+     * @return 当天零点时间戳
+     */
+    public static long getTodayZeroTime() {
+        long nowTime =System.currentTimeMillis();
+        return nowTime - (nowTime + TimeZone.getDefault().getRawOffset())% (1000*3600*24);
+    }
+
+    /**
+     * @param title 指定字符串，获取名词，动词，形容词
+     * @return 名词，动词，形容词
+     */
+    public static List<String> findFengCi(String title) {
+        List<Term> terms = ToAnalysis.parse(title).getTerms();
+        HashSet<String> resultList = new HashSet<>(terms.size());
+        for(Term term : terms) {
+            String natureStr = term.getNatureStr();
+            if (natureStr.startsWith("n") || natureStr.startsWith("a") || natureStr.startsWith("b")) {
+                resultList.add(term.getName());
+            }
+        }
+        return new ArrayList<>(resultList);
+    }
+
+    /**
+     * @return 获得天猫淘宝的商品图片
+     */
+    public static List<String> findTmailTaoBaoProductImg(List<DOMElement> imgs) {
+        List<String> productImgs = new ArrayList<>(imgs.size());
+        int size = imgs.size();
+        int start = size <= 5 ? 0 : size / 3;
+        size = start + 10 >= size ? size : start + 10;
+        for (int i = start; i < size; i++) {
+
+            DOMElement domElement = imgs.get(i);
+            String src = "";
+            if (domElement.hasAttribute("data-ks-lazyload")) {
+                src = domElement.getAttribute("data-ks-lazyload");
+            } else if (domElement.hasAttribute("src")) {
+                src = domElement.getAttribute("src");
+            }
+            src = src.startsWith("http") ? src : "http:" + src;
+            productImgs.add(src);
+        }
+        return productImgs;
+    }
+
+    /**
+     * @return 明天00：00
+     */
+    public static long timeTomorrowBegin() {
+        return getTodayZeroTime() + 60 * 60 * 24 * 1000;
+    }
+
     public static void log(Object info) {
         MLog.logi(info.toString());
+    }
+
+    public static void logLine() {
+        MLog.logi("================================================================================");
+    }
+
+    public static void logErroLine() {
+        MLog.logi("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
     }
 }

@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface FinishLoadProcessInteface {
 
-    boolean htmlLoadingOverCanProcess(FinishLoadingEvent event, String url, DOMDocument domDocument, BrowsersInterface browser);
-    boolean htmlLoadingOverProcess(
+    boolean canProcess(FinishLoadingEvent event, String url, DOMDocument domDocument, BrowsersInterface browser);
+    boolean process(
             List<ProductInfoBean> productInfoBeans,
             FinishLoadingEvent event,
             String url,
