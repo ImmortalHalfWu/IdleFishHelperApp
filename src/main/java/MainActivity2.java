@@ -467,7 +467,7 @@ public class MainActivity2 {
 //                DOMElement element1 = document.findElement(By.className("coupons-data"));
 //                long innerText = timeToStamp(element1.getInnerText().split("-")[1]);              // 优惠券到期时间
 //
-//                // TODO: 2019-08-17 这部分的超时过滤太夸张
+//                // 2019-08-17 这部分的超时过滤太夸张
 //                if (innerText > timeTomorrowBegin()) {
 //                    DOMElement element = document.findElement(By.className("item-wrap"));
 //                    DOMElement a = element.findElement(By.tagName("a"));                                    // 淘宝链接
