@@ -6,6 +6,5 @@ public interface IFishHomeActivityProcess extends IFishProcess {
 
     IFishHomeMyPageProcess toMyPage(ADBProcess adbProcess, String deviceAddress);
     IFishPostProductTypeChoiceProcess toPostProductActivity(ADBProcess adbProcess, String deviceAddress);
-    IFishPostProductTypeChoiceProcess toPostFreeProductActivity(ADBProcess adbProcess, String deviceAddress);
 
 }

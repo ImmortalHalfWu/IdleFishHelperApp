@@ -4,9 +4,13 @@ public interface IADBProcess {
 
     boolean adbStartIdleFishMainActivity(String deviceAddr);
 
-    boolean adbIdleFishIsRunning(String deviceAddr);
+    boolean adbIdleFishIsResume(String deviceAddr);
 
     boolean adbIdleFishIsInstance(String deviceAddr);
+
+    boolean adbIdleFishUNInstance(String deviceAddr);
+
+    boolean adbIdleFishInstance(String deviceAddr, String apkPath);
 
     boolean adbGetAndroidUIXML(String deviceAddr, String phonePath, String savePath) ;
 
@@ -31,6 +35,8 @@ public interface IADBProcess {
     boolean adbSendBackKeyEvent(String deviceAddr);
 
     String findTopActivity(String deviceAddr);
+
+    boolean adbChangeKeyBoard(String deviceAddr);
 
     boolean runInCmd(String cmd, String resultIsSuc) ;
 

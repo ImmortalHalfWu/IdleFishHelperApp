@@ -1,8 +1,8 @@
 package androids;
 
-import androids.adbs.ADBUtils;
-
-import java.awt.*;
+import Utils.FileUtils;
+import Utils.MLog;
+import androids.adbs.ADBProcess;
 import java.util.ArrayList;
 
 public class AndroidUtils {
@@ -48,43 +48,39 @@ public class AndroidUtils {
             "确定",
     };
 
-
-    public final static String[] productSetingUITextIndex = {
-            "删除",
-    };
-
-    public final static String[] productDeleteDialogUITextIndex = {
-            "确定",
-    };
-
-
-
-    public static java.util.List<String> getDeviceAddreByAdbResult() {
+    static java.util.List<String> getDeviceAddreByAdbResult(ADBProcess adbProcess) {
         ArrayList<String> arrayList = new ArrayList<>();
-        String s = ADBUtils.adbFindAllDevice();
-        s = s.replace("List of devices attached", "");
-        String[] split = s.split("");
+        String s = adbProcess.adbFindAllDevice();
+        s = s.replace("List of devices attached", "").replace("device", "");
+        String[] split = s.split("\n");
         if (split.length < 2) {
             return arrayList;
         }
 
-        for (int i = 0; i < split.length; i+=2) {
-            arrayList.add(split[i]);
+        for (int i = 0; i < split.length; i++) {
+            if (!FileUtils.isEmpty(split[i])) {
+                arrayList.add(split[i].replace("\t", ""));
+            }
         }
         return arrayList;
     }
 
-    public static java.util.List<String> connectDeviceByAddress(java.util.List<String> deviceAddr) {
+    static java.util.List<String> connectDeviceByAddress(java.util.List<String> deviceAddr, ADBProcess adbProcess) {
         for (String address :
                 AndroidUtils.deviceAddress) {
-            ADBUtils.adbConnectDevice(address);
+            adbProcess.adbConnectDevice(address);
         }
 
-        return getDeviceAddreByAdbResult();
+        return getDeviceAddreByAdbResult(adbProcess);
     }
 
     public static String getUIXMLFileName(Object o, String tag) {
         return tag + o.getClass().getSimpleName() + ".xml";
     }
+
+    public static void log(Object info) {
+        MLog.logi(info.toString());
+    }
+
 
 }

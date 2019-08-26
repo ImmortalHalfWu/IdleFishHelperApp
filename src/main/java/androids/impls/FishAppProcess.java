@@ -19,13 +19,21 @@ public class FishAppProcess extends FishBaseProcess implements IFishAppProcess {
 
     @Override
     public IFishAppProcess startApp(ADBProcess adbProcess, String deviceAddress) {
-        if (!adbProcess.adbIdleFishIsInstance(deviceAddress)) {
-            throw new IllegalArgumentException("咸鱼未安装");
-        }
         if (isShowing(adbProcess, deviceAddress)){
             return this;
         }
-        adbProcess.adbStartIdleFishMainActivity(deviceAddress);
+
+        while (!isShowing(adbProcess, deviceAddress)) {
+            adbProcess.adbStartIdleFishMainActivity(deviceAddress);
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+//        adbProcess.adbStartIdleFishMainActivity(deviceAddress);
+
         try {
             Thread.sleep(7000);
         } catch (InterruptedException e) {
@@ -36,6 +44,6 @@ public class FishAppProcess extends FishBaseProcess implements IFishAppProcess {
 
     @Override
     public boolean isShowing(ADBProcess adbProcess, String deviceAddress) {
-        return adbProcess.adbIdleFishIsRunning(deviceAddress);
+        return adbProcess.adbIdleFishIsResume(deviceAddress);
     }
 }

@@ -127,7 +127,7 @@ public class ManManBuyFinishLoadProcess implements FinishLoadProcessInteface {
                     productInfoBean.setOrderNum(Integer.parseInt(orderNum));
                     productInfoBean.setPriceCurrent(Double.parseDouble(priceCurrent));
                     productInfoBean.setPriceOld(Double.parseDouble(priceOld));
-                    productInfoBean.setProductInfo("【全新包邮】" + productInfo);
+                    productInfoBean.setProductInfo("  [全新包邮]  " + productInfo);
                     productInfoBeanLinkedHashSet.add(productInfoBean);
 
                 } catch (Exception e) {

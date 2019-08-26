@@ -421,7 +421,6 @@ public class FileUtils {
      * @param dir_path
      */
     public static void mkDir(String dir_path) {
-        System.out.println("新建目录操作");
         File myFolderPath = new File(dir_path);
         try {
             if (!myFolderPath.exists()) {

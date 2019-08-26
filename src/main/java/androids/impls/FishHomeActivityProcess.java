@@ -47,7 +47,7 @@ public class FishHomeActivityProcess extends FishBaseProcess implements IFishHom
                 adbProcess.adbInputTap(deviceAddress, point.x, point.y);
             }
 
-            Thread.sleep(5000);
+            Thread.sleep(1000);
 
         } catch (DocumentException | InterruptedException e) {
             e.printStackTrace();
@@ -68,12 +68,6 @@ public class FishHomeActivityProcess extends FishBaseProcess implements IFishHom
     public IFishPostProductTypeChoiceProcess toPostProductActivity(ADBProcess adbProcess, String deviceAddress) {
         adbProcess.adbInputTap(deviceAddress, postClickPoint.x, postClickPoint.y);
         adbProcess.adbInputTap(deviceAddress, postClickPoint.x, postClickPoint.y);
-        return iFishPostProductActivityProcess == null ? new FishPostProductTypeChoiceProcess(adbProcess, deviceAddress, uiXmlSaveDirPath) : iFishPostProductActivityProcess;
-    }
-
-    @Override
-    public IFishPostProductTypeChoiceProcess toPostFreeProductActivity(ADBProcess adbProcess, String deviceAddress) {
-
-        throw new RuntimeException();
+        return iFishPostProductActivityProcess = iFishPostProductActivityProcess == null ? new FishPostProductTypeChoiceProcess(adbProcess, deviceAddress, uiXmlSaveDirPath) : iFishPostProductActivityProcess;
     }
 }

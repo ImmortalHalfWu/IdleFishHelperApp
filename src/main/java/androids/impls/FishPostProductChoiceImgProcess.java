@@ -19,7 +19,6 @@ public class FishPostProductChoiceImgProcess extends FishBaseProcess implements 
             "图片未选中",
     };
 
-
     private String uiXmlSaveDirPath;
     private ArrayList<Point> points = new ArrayList<>();
 
@@ -58,6 +57,7 @@ public class FishPostProductChoiceImgProcess extends FishBaseProcess implements 
     public void postProduct(IADBProcess adbProcess, String deviceAddress, UIPostBean product) {
 
         int imagLengs = product.getImageList().size();
+        imagLengs = imagLengs > 10 ? 10 : imagLengs;
         int pointLengs = points.size();
 
 

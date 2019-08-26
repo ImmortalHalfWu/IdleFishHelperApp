@@ -2,14 +2,13 @@ package androids.adbs;
 
 import Utils.FileUtils;
 import Utils.MLog;
-import com.teamdev.jxbrowser.chromium.internal.FileUtil;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
-public class ADBUtils {
+class ADBUtils {
 
     private final static String ADB_PHONE_ROOT_DIR = "/sdcard/";
     private final static String ADB = "adb -s ";
@@ -19,26 +18,37 @@ public class ADBUtils {
     private final static String ADB_START_IDLE_FISH_MAIN_ACTIVITY = " shell am start -n com.taobao.idlefish/com.taobao.fleamarket.home.activity.InitActivity";
     private final static String ADB_IDLE_FISH_IS_RUNNING = " shell dumpsys activity activities | grep ResumedActivity";
     private final static String ADB_IDLE_FISH_IS_INSTANCES = " shell pm list packages | grep com.taobao.idlefish";
+    private final static String ADB_IDLE_FISH_INSTANCES = " install -r";
+    private final static String ADB_IDLE_FISH_UNINSTANCES = " uninstall com.taobao.idlefish";
     private final static String ADB_INPUT_TAP = " shell input tap ";
     private final static String ADB_CONNECT = " connect ";
-    private final static String ADB_FIND_DEVICES = " devices ";
+    private final static String ADB_FIND_DEVICES = "adb devices ";
     private final static String ADB_INPUT_KEY = " shell input keyevent ";
     private final static String ADB_INPUT_TEXT = " shell input text ";
     private final static String ADB_SWIPE = " shell input swipe ";
     private final static String ADB_DELETE_FILE = " shell rm ";
     private final static String ADB_TOP_ACTIVITY = " shell dumpsys activity top ";
     private final static String ADB_SCAN_FILE = " shell am broadcast -a android.intent.action.MEDIA_SCANNER_SCAN_FILE -d file://";
+    private final static String ADB_CHANGE_KEY_BOARD = " shell ime set com.android.adbkeyboard/.AdbIME";
 
-    public synchronized static boolean adbStartIdleFishMainActivity(String deviceAddr) {
+    synchronized static boolean adbStartIdleFishMainActivity(String deviceAddr) {
         return runInCmd(ADB + deviceAddr + ADB_START_IDLE_FISH_MAIN_ACTIVITY, "Stringing:");
     }
 
-    public synchronized static boolean adbIdleFishIsRunning(String deviceAddr) {
+    synchronized static boolean adbIdleFishIsResume(String deviceAddr) {
         return runInCmd(ADB + deviceAddr + ADB_IDLE_FISH_IS_RUNNING, "com.taobao.idlefish/com.taobao.fleamarket.home.activity.MainActivity");
     }
 
-    public synchronized static boolean adbIdleFishIsInstance(String deviceAddr) {
+    synchronized static boolean adbIdleFishIsInstance(String deviceAddr) {
         return runInCmd(ADB + deviceAddr + ADB_IDLE_FISH_IS_INSTANCES, "com.taobao.idlefish");
+    }
+
+    synchronized static boolean adbIdleFishUNInstance(String deviceAddr) {
+        return runInCmd(ADB + deviceAddr + ADB_IDLE_FISH_UNINSTANCES, "com.taobao.idlefish");
+    }
+
+    synchronized static boolean adbIdleFishInstance(String deviceAddr, String apkPath) {
+        return runInCmd(ADB + deviceAddr + ADB_IDLE_FISH_INSTANCES + apkPath, "com.taobao.idlefish");
     }
 
     synchronized static boolean adbGetAndroidUIXML(String deviceAddr, String phoneFileName, String saveFileName) {
@@ -65,11 +75,11 @@ public class ADBUtils {
     }
 
     synchronized static boolean adbFindDevice(String deviceAddr) {
-        return runInCmd(ADB + ADB_FIND_DEVICES, deviceAddr);
+        return runInCmd(ADB_FIND_DEVICES, deviceAddr);
     }
 
     public synchronized static String adbFindAllDevice() {
-        return runInCmd(ADB + ADB_FIND_DEVICES);
+        return runInCmd(ADB_FIND_DEVICES);
     }
 
     synchronized static boolean adbInputText(String deviceAddr, String text) {
@@ -88,15 +98,19 @@ public class ADBUtils {
         return !runInCmd(ADB + deviceAddr + ADB_DELETE_FILE + filePath, "No Such");
     }
 
-    public synchronized static boolean adbSendBackKeyEvent(String deviceAddr) {
+    synchronized static boolean adbSendBackKeyEvent(String deviceAddr) {
         return adbSendKeyEvent(deviceAddr, "4");
     }
 
-    public synchronized static boolean adbSendKeyEvent(String deviceAddr, String key) {
+    private synchronized static boolean adbSendKeyEvent(String deviceAddr, String key) {
         return runInCmd(ADB + deviceAddr + ADB_INPUT_KEY + key, "");
     }
 
-    public synchronized static boolean runInCmd(String cmd, String resultIsSuc) {
+    synchronized static boolean adbChangeKeyBoard(String deviceAddr) {
+        return runInCmd(ADB + deviceAddr + ADB_CHANGE_KEY_BOARD, "selected");
+    }
+
+    synchronized static boolean runInCmd(String cmd, String resultIsSuc) {
         return runInCmd(cmd).contains(resultIsSuc);
     }
 

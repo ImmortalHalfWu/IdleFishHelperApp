@@ -22,13 +22,23 @@ public class ADBProcess implements IADBProcess {
     }
 
     @Override
-    public boolean adbIdleFishIsRunning(String deviceAddr) {
-        return ADBUtils.adbIdleFishIsRunning(deviceAddr);
+    public boolean adbIdleFishIsResume(String deviceAddr) {
+        return ADBUtils.adbIdleFishIsResume(deviceAddr);
     }
 
     @Override
     public boolean adbIdleFishIsInstance(String deviceAddr) {
         return ADBUtils.adbIdleFishIsInstance(deviceAddr);
+    }
+
+    @Override
+    public boolean adbIdleFishUNInstance(String deviceAddr) {
+        return ADBUtils.adbIdleFishUNInstance(deviceAddr);
+    }
+
+    @Override
+    public boolean adbIdleFishInstance(String deviceAddr, String apkPath) {
+        return ADBUtils.adbIdleFishInstance(deviceAddr, apkPath);
     }
 
     @Override
@@ -63,7 +73,7 @@ public class ADBProcess implements IADBProcess {
 
     @Override
     public String adbFindAllDevice() {
-        return ADBUtils.adbFindAllDevice( );
+        return ADBUtils.adbFindAllDevice();
     }
 
     @Override
@@ -92,7 +102,12 @@ public class ADBProcess implements IADBProcess {
     }
 
     @Override
-    public synchronized boolean runInCmd(String cmd, String resultIsSuc) {
+    public boolean adbChangeKeyBoard(String deviceAddr) {
+        return ADBUtils.adbChangeKeyBoard(deviceAddr);
+    }
+
+    @Override
+    public boolean runInCmd(String cmd, String resultIsSuc) {
         return ADBUtils.runInCmd(cmd, resultIsSuc);
     }
 

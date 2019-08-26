@@ -30,6 +30,7 @@ public class FishMyPostedActivityProcess extends FishBaseProcess implements IFis
             "留言",
             "浏览",
             "刚刚擦亮",
+            "已擦亮",
             "+",
             "箭头",
     };
