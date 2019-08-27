@@ -356,25 +356,52 @@ public class XMLUtil {
         if (attrBoundsIsNull(element)) {
             return new Point(0, 0);
         }
+        Point elementLeftTopPoint = getElementLeftTopPoint(element);
+        Point elementRightBottomPoint = getElementRightBottomPoint(element);
+
+        return getCenterPoint(
+                elementLeftTopPoint.x,
+                elementLeftTopPoint.y,
+                elementRightBottomPoint.x,
+                elementRightBottomPoint.y);
+    }
+
+    public static Point getElementLeftTopPoint(Element element) {
+        if (attrBoundsIsNull(element)) {
+            return new Point(0, 0);
+        }
+
+        String[] lifeTop = getElementBoundsSplit(element)[0].split(",");
+        int left = Integer.parseInt(lifeTop[0]);
+        int top = Integer.parseInt(lifeTop[1]);
+
+        return new Point(left, top);
+    }
+
+    public static Point getElementRightBottomPoint(Element element) {
+        if (attrBoundsIsNull(element)) {
+            return new Point(0, 0);
+        }
+
+        String[] rightBottom = getElementBoundsSplit(element)[1].split(",");
+        int right = Integer.parseInt(rightBottom[0]);
+        int bottom = Integer.parseInt(rightBottom[1]);
+
+        return new Point(right, bottom);
+
+    }
+
+    private static String[] getElementBoundsSplit(Element element) {
+
         Attribute bounds = element.attribute("bounds");
         String value = bounds.getValue();
         value = value.replace("][", "@@");
         String[] split = value.split("@@");
         split[0] = split[0].replace("[", "");
         split[1] = split[1].replace("]", "");
-
-
-        String[] lifeTop = split[0].split(",");
-        int left = Integer.parseInt(lifeTop[0]);
-        int top = Integer.parseInt(lifeTop[1]);
-
-
-        String[] rightBottom = split[1].split(",");
-        int right = Integer.parseInt(rightBottom[0]);
-        int bottom = Integer.parseInt(rightBottom[1]);
-
-        return getCenterPoint(left, top, right, bottom);
+        return split;
     }
+
 
     /**
      * @return 根据四边，计算中心点

@@ -47,7 +47,7 @@ public class FishHomeActivityProcess extends FishBaseProcess implements IFishHom
                 adbProcess.adbInputTap(deviceAddress, point.x, point.y);
             }
 
-            Thread.sleep(1000);
+            Thread.sleep(500);
 
         } catch (DocumentException | InterruptedException e) {
             e.printStackTrace();

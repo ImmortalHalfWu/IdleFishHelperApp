@@ -51,6 +51,22 @@ public class FishPostProductActivityProcess extends FishBaseProcess implements I
                     .addClick(uiPoint.get(POINT_NAME_PRICE))
                     .addCallBack(() -> new FishPostProductMoneyActivityProcess(adbProcess, deviceAddress, FileUtils.DIR_PATH_XML).postProduct(adbProcess, deviceAddress, product))
                     .addClick(uiPoint.get(POINT_NAME_SEND))
+                    .addCallBack(() -> {
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    })
+                    .addBackClick()
+                    .addBackClick()
+                    .addCallBack(() -> {
+                        try {
+                            Thread.sleep(800);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    })
                     .send(deviceAddress, adbProcess);
         } catch (Exception e) {
             e.printStackTrace();

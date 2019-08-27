@@ -95,7 +95,7 @@ class ADBUtils {
     }
 
     synchronized static boolean adbDeleteFile(String deviceAddr, String filePath) {
-        return !runInCmd(ADB + deviceAddr + ADB_DELETE_FILE + filePath, "No Such");
+        return !runInCmd(ADB + deviceAddr + ADB_DELETE_FILE + ADB_PHONE_ROOT_DIR + filePath, "No Such");
     }
 
     synchronized static boolean adbSendBackKeyEvent(String deviceAddr) {

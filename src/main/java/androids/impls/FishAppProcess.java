@@ -34,11 +34,11 @@ public class FishAppProcess extends FishBaseProcess implements IFishAppProcess {
 
 //        adbProcess.adbStartIdleFishMainActivity(deviceAddress);
 
-        try {
-            Thread.sleep(7000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Thread.sleep(7000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
         return this;
     }
 

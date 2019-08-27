@@ -77,11 +77,6 @@ public class AndroidManager {
         if (deviceByAddress != null) {
             deviceByAddress.postProduct(uiPostBean);
             AndroidUtils.log("发送商品完成");
-            try {
-                Thread.sleep(400);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         } else {
             AndroidUtils.log("发送商品失败，未查询到指定设备：" + deviceAddress);
         }

@@ -56,6 +56,7 @@ public class FishPostProductTypeChoiceProcess extends FishBaseProcess implements
                 MLog.logi("发布商品图片上传失败：" + imagePath + "不是文件");
                 continue;
             }
+
             if (!adbProcess.adbPushFile(deviceAddress, imagePath.getAbsolutePath(), imagePath.getName())) {
                 erroImages.add(imagePath);
                 MLog.logi("发布商品图片上传失败：" + deviceAddress + "__" + imagePath);
@@ -72,5 +73,10 @@ public class FishPostProductTypeChoiceProcess extends FishBaseProcess implements
                 deviceAddress,
                 uiXmlSaveDirPath
         ).postProduct(adbProcess, deviceAddress, product);
+
+        for (File imagePath :
+                imageList) {
+            adbProcess.adbDeleteFile(deviceAddress, imagePath.getName());
+        }
     }
 }
