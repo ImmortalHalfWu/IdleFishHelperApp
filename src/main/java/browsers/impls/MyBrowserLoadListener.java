@@ -1,42 +1,23 @@
 package browsers.impls;
 
 import browsers.BrowserUtils;
-import browsers.beans.ProductInfoBean;
 import browsers.interfaces.BrowsersInterface;
-import browsers.interfaces.FinishLoadProcessInteface;
+import browsers.interfaces.MBrowserLoadListener;
 import com.teamdev.jxbrowser.chromium.Browser;
 import com.teamdev.jxbrowser.chromium.dom.DOMDocument;
 import com.teamdev.jxbrowser.chromium.events.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
-public class MyBrowserLoadListener implements LoadListener {
+public class MyBrowserLoadListener extends LoadAdapter {
 
-    private List<FinishLoadProcessInteface> processInterfaces;
+    private final List<MBrowserLoadListener> processInterfaces = new ArrayList<>();
     private Browser browser;
-    private List<ProductInfoBean> productInfoBeans;
 
     public MyBrowserLoadListener(Browser browser) {
         this.browser = browser;
-        this.productInfoBeans = new ArrayList<>();
-        this.processInterfaces = new ArrayList<>(5);
-        processInterfaces.add(new YHQFinishLoadProcess());
-        processInterfaces.add(new ProductPicFinishLoadProcess());
-        processInterfaces.add(new ManManBuyFinishLoadProcess());
-        processInterfaces.add(new LoginFinishLoadProcess());
-        processInterfaces.add(new AiTaoBaoFinishLoadProcess());
-    }
-
-
-    @Override
-    public void onStartLoadingFrame(StartLoadingEvent startLoadingEvent) {
-
-    }
-
-    @Override
-    public void onProvisionalLoadingFrame(ProvisionalLoadingEvent provisionalLoadingEvent) {
-
     }
 
     @Override
@@ -44,37 +25,32 @@ public class MyBrowserLoadListener implements LoadListener {
         String validatedURL = finishLoadingEvent.getValidatedURL();
         BrowserUtils.log( "页面加载完成" + validatedURL);
         DOMDocument document = browser.getDocument();
-
-        for (FinishLoadProcessInteface process :
+        BrowserUtils.log( "开始分发页面数据" + validatedURL);
+        for (MBrowserLoadListener process :
                 processInterfaces) {
-            if (process.canProcess(finishLoadingEvent, validatedURL, document, browsersInterface) &&
-                process.process(productInfoBeans, finishLoadingEvent, validatedURL, document, browsersInterface)) {
-                BrowserUtils.log(process.getClass().getSimpleName() + "页面处理完成");
-                return;
+
+            try {
+
+                if (process.onFinishLoadingFrame(finishLoadingEvent, validatedURL, document, browsersInterface)) {
+                    return;
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                BrowserUtils.logErroLine( "分发页面数据异常！！！！！！！" + validatedURL);
             }
         }
-
 //        BrowserUtils.logErroLine();
 //        BrowserUtils.log( "未找到页面处理器" + validatedURL);
 //        BrowserUtils.logErroLine();
 
     }
 
-    @Override
-    public void onFailLoadingFrame(FailLoadingEvent failLoadingEvent) {
-
+    public void registerBrowserLoadListener(MBrowserLoadListener browserLoadListener) {
+        if (browserLoadListener != null && !processInterfaces.contains(browserLoadListener)) {
+            processInterfaces.add(browserLoadListener);
+        }
     }
-
-    @Override
-    public void onDocumentLoadedInFrame(FrameLoadEvent frameLoadEvent) {
-
-    }
-
-    @Override
-    public void onDocumentLoadedInMainFrame(LoadEvent loadEvent) {
-
-    }
-
 
     private BrowsersInterface browsersInterface = new BrowsersInterface() {
         @Override

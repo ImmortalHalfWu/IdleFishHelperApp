@@ -76,6 +76,7 @@ public class FishPostProductTypeChoiceProcess extends FishBaseProcess implements
 
         for (File imagePath :
                 imageList) {
+            MLog.logi("发布商品完成，删除图片：" + deviceAddress + "__" + imagePath.getName());
             adbProcess.adbDeleteFile(deviceAddress, imagePath.getName());
         }
     }

@@ -1,10 +1,10 @@
-package browsers.impls;
+package browsers.impls.manAll;
 
 import Utils.FileUtils;
 import browsers.BrowserUtils;
 import browsers.beans.ProductInfoBean;
 import browsers.interfaces.BrowsersInterface;
-import browsers.interfaces.FinishLoadProcessInteface;
+import browsers.interfaces.FinishLoadProcessInterface;
 import browsers.interfaces.ProductPicProcessInterface;
 import com.google.gson.Gson;
 import com.teamdev.jxbrowser.chromium.dom.DOMDocument;
@@ -12,13 +12,14 @@ import com.teamdev.jxbrowser.chromium.events.FinishLoadingEvent;
 
 import java.util.List;
 
-public class ProductPicFinishLoadProcess implements FinishLoadProcessInteface {
+public class ProductPicFinishLoadProcess implements FinishLoadProcessInterface {
 
-    private int scrollCount = 0;
     private int orderPicIndex = 0;
     private ProductPicProcessInterface tMallPicProcess = new TmallProductPicFinishLoadProcess();
     private ProductPicProcessInterface taoBaoPicProcess = new TaoBaoProductPicFinishLoadProcess();
     private ProductPicProcessInterface currentProcess;
+
+    private boolean isFinish;
 
     @Override
     public boolean canProcess(FinishLoadingEvent event, String url, DOMDocument domDocument, BrowsersInterface browser) {
@@ -35,11 +36,10 @@ public class ProductPicFinishLoadProcess implements FinishLoadProcessInteface {
     }
 
     @Override
-    public boolean process(List<ProductInfoBean> productInfoBeans, FinishLoadingEvent event, String validatedURL, DOMDocument document, BrowsersInterface browser) {
+    public boolean process(String productInfoSavePath, List<ProductInfoBean> productInfoBeans, FinishLoadingEvent event, String validatedURL, DOMDocument document, BrowsersInterface browser) {
         new Thread(() -> {
 
 
-            scrollCount = 0;
             int scrollIndex = 395;
             do {
                 try {
@@ -49,7 +49,6 @@ public class ProductPicFinishLoadProcess implements FinishLoadProcessInteface {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                ++scrollCount;
                 if (scrollIndex > 10) {
                     BrowserUtils.log("商品详情页，页面滚动第" + scrollIndex + "次");
                 }
@@ -81,18 +80,24 @@ public class ProductPicFinishLoadProcess implements FinishLoadProcessInteface {
                 browser.loadURL(productInfoBeans.get(orderPicIndex).getBuyUrl());
             } else {
                 orderPicIndex = 0;
+                isFinish = true;
                 String s = new Gson().toJson(productInfoBeans);
                 BrowserUtils.logLine();
                 BrowserUtils.log("图像查找完成了：");
                 BrowserUtils.log(s);
                 BrowserUtils.logLine();
-                FileUtils.fileLinesWrite(FileUtils.FILE_PATH_JSON, s, false);
+                FileUtils.fileLinesWrite(productInfoSavePath, s, false);
             }
 
 
         }).start();
 
         return true;
+    }
+
+    @Override
+    public boolean productIsLoadComplete() {
+        return isFinish;
     }
 
 }

@@ -15,6 +15,7 @@ public interface IAndroidDeviceProcess {
     void deleteProduct(List<String> productName);
     void startFishApp();
     void installFishApp();
+    boolean isInstallFishApp();
     void deleteFishApp();
 
 }

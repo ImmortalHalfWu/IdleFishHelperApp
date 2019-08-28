@@ -1,10 +1,10 @@
-package browsers.impls;
+package browsers.impls.manAll;
 
 import Utils.FileUtils;
 import browsers.BrowserUtils;
 import browsers.beans.ProductInfoBean;
 import browsers.interfaces.BrowsersInterface;
-import browsers.interfaces.FinishLoadProcessInteface;
+import browsers.interfaces.FinishLoadProcessInterface;
 import com.google.gson.Gson;
 import com.teamdev.jxbrowser.chromium.dom.By;
 import com.teamdev.jxbrowser.chromium.dom.DOMDocument;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 
-public class YHQFinishLoadProcess implements FinishLoadProcessInteface {
+public class YHQFinishLoadProcess implements FinishLoadProcessInterface {
 
     private final static String PROCESS_URL = "https://uland.taobao.com/coupon/";
     private int yhqIndex = 0;
@@ -28,7 +28,7 @@ public class YHQFinishLoadProcess implements FinishLoadProcessInteface {
     }
 
     @Override
-    public boolean process(List<ProductInfoBean> productInfoBeans, FinishLoadingEvent event, String url, DOMDocument domDocument, BrowsersInterface browser) {
+    public boolean process(String productInfoSavePath, List<ProductInfoBean> productInfoBeans, FinishLoadingEvent event, String url, DOMDocument domDocument, BrowsersInterface browser) {
 
         BrowserUtils.log("查找第" + yhqIndex + "个商品优惠券信息");
         ProductInfoBean productInfoBean = productInfoBeans.get(yhqIndex);
@@ -85,12 +85,17 @@ public class YHQFinishLoadProcess implements FinishLoadProcessInteface {
             productInfoBeans.clear();
             productInfoBeans.addAll(productInfoBeansTemp.subList(0, productInfoBeansTemp.size() < 200 ? productInfoBeansTemp.size() : 200));
 
-            FileUtils.fileLinesWrite(FileUtils.FILE_PATH_JSON, new Gson().toJson(productInfoBeans), false);
+            FileUtils.fileLinesWrite(productInfoSavePath, new Gson().toJson(productInfoBeans), false);
 
             browser.loadURL(productInfoBeans.get(0).getBuyUrl());
         }
 
         return true;
+    }
+
+    @Override
+    public boolean productIsLoadComplete() {
+        return false;
     }
 
 }

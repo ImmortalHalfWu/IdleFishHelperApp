@@ -1,11 +1,10 @@
-package browsers.impls;
+package browsers.impls.manAll;
 
 import Utils.FileUtils;
-import Utils.MLog;
 import browsers.BrowserUtils;
 import browsers.beans.ProductInfoBean;
 import browsers.interfaces.BrowsersInterface;
-import browsers.interfaces.FinishLoadProcessInteface;
+import browsers.interfaces.FinishLoadProcessInterface;
 import com.google.gson.Gson;
 import com.teamdev.jxbrowser.chromium.dom.By;
 import com.teamdev.jxbrowser.chromium.dom.DOMDocument;
@@ -18,7 +17,7 @@ import java.util.List;
 
 import static com.teamdev.jxbrowser.chromium.dom.DOMNodeType.ElementNode;
 
-public class ManManBuyFinishLoadProcess implements FinishLoadProcessInteface {
+public class ManManBuyFinishLoadProcess implements FinishLoadProcessInterface {
 
     private final static String PROCESS_URL_START = "http://baicai.manmanbuy.com/";
     private final static String PROCESS_URL = PROCESS_URL_START + "Default.aspx?PageID=";
@@ -32,7 +31,8 @@ public class ManManBuyFinishLoadProcess implements FinishLoadProcessInteface {
     }
 
     @Override
-    public boolean process(List<ProductInfoBean> productInfoBeans,
+    public boolean process(String productInfoSavePath,
+                           List<ProductInfoBean> productInfoBeans,
                            FinishLoadingEvent event,
                            String url,
                            DOMDocument domDocument,
@@ -55,7 +55,7 @@ public class ManManBuyFinishLoadProcess implements FinishLoadProcessInteface {
             BrowserUtils.log("查找完所有慢慢买商品：总计" + productInfoBeans.size());
             BrowserUtils.logLine();
 
-            FileUtils.fileLinesWrite(FileUtils.FILE_PATH_JSON, new Gson().toJson(productInfoBeans), false);
+            FileUtils.fileLinesWrite(productInfoSavePath, new Gson().toJson(productInfoBeans), false);
 
             browser.loadURL(productInfoBeans.get(0).getYhqUrl());
 
@@ -143,6 +143,11 @@ public class ManManBuyFinishLoadProcess implements FinishLoadProcessInteface {
         loadNextWebPage(browser);
 
         return true;
+    }
+
+    @Override
+    public boolean productIsLoadComplete() {
+        return false;
     }
 
     private void loadNextWebPage(BrowsersInterface browser) {

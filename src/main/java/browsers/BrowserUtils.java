@@ -156,4 +156,9 @@ public class BrowserUtils {
     public static void logErroLine() {
         MLog.logi("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
     }
+    public static void logErroLine(String erro) {
+        logErroLine();
+        MLog.logi(erro);
+        logErroLine();
+    }
 }

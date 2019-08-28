@@ -1,6 +1,7 @@
 package browsers;
 
 import browsers.impls.MyBrowserLoadListener;
+import browsers.interfaces.MBrowserLoadListener;
 import com.teamdev.jxbrowser.chromium.*;
 
 public class MyBrowser {
@@ -37,6 +38,13 @@ public class MyBrowser {
 
     public Browser getBrowser() {
         return browser;
+    }
+
+    public MyBrowser registerBrowserLoadListener(MBrowserLoadListener browserLoadListener) {
+        if (myBrowserLoadListener != null) {
+            myBrowserLoadListener.registerBrowserLoadListener(browserLoadListener);
+        }
+        return this;
     }
 
     private void configBrowserView() {

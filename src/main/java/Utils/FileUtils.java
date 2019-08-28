@@ -1,7 +1,6 @@
 package Utils;
 
 import java.io.*;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -22,18 +21,14 @@ public class FileUtils {
     public final static String DIR_PATH_XML = DIR_PATH_ROOT + File.separator + "xmls" + File.separator;
     public final static String DIR_PATH_JSON = DIR_PATH_ROOT + File.separator + "jsons" + File.separator;
 
-    public final static String FILE_NAME_XML = "uiXML.xml";
-    public final static String FILE_NAME_JSON = "productJson.json";
+    public final static String FILE_NAME_NEW_PRODUCT_JSON = "NewProductJson.json";
+    public final static String FILE_NAME_POSTED_PRODUCT_JSON = "PostedProductJson.json";
 
-    public final static String FILE_PATH_XML = DIR_PATH_XML + FILE_NAME_XML;
-    public final static String FILE_PATH_JSON = DIR_PATH_JSON + FILE_NAME_JSON;
 
     public static void init() {
         mkDir(DIR_PATH_IMG);
         mkDir(DIR_PATH_XML);
         mkDir(DIR_PATH_JSON);
-        mkFile(FILE_PATH_XML);
-        mkFile(FILE_PATH_JSON);
     }
 
     /**
@@ -59,7 +54,7 @@ public class FileUtils {
     public static String[] StringToArray(String str,String splitStr){
         String[] arrayStr = null;
         if(!"".equals(str) && str != null){
-            if(str.indexOf(splitStr)!=-1){
+            if(str.contains(splitStr)){
                 arrayStr = str.split(splitStr);
             }else{
                 arrayStr = new String[1];
@@ -67,6 +62,26 @@ public class FileUtils {
             }
         }
         return arrayStr;
+    }
+
+    /**
+     * @param deviceId 设备id
+     * @return 设备对应的新商品数据文件路径
+     */
+    public static String createNewProductInfoFile(String deviceId) {
+        String s = DIR_PATH_JSON + deviceId + FILE_NAME_NEW_PRODUCT_JSON;
+        mkFile(s);
+        return s;
+    }
+
+    /**
+     * @param deviceId 设备id
+     * @return 设备对应的已经发布商品数据文件路径
+     */
+    public static String createPostedProductInfoFile(String deviceId) {
+        String s = DIR_PATH_JSON + deviceId + FILE_NAME_POSTED_PRODUCT_JSON;
+        mkFile(s);
+        return s;
     }
 
     /**

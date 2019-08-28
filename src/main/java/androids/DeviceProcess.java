@@ -24,7 +24,7 @@ public class DeviceProcess implements IAndroidDeviceProcess {
 
     @Override
     public List<String> findPostedProduct() {
-        if (!isConnect) {
+        if (!isConnect || !isInstallFishApp()) {
             return new ArrayList<>(0);
         }
         List<String> allProductName = mFishAppProcess.toMainActivity(mADBProcess, deviceAddress)
@@ -36,7 +36,7 @@ public class DeviceProcess implements IAndroidDeviceProcess {
 
     @Override
     public List<String> findOrderSucProduct() {
-        if (!isConnect) {
+        if (!isConnect || !isInstallFishApp()) {
             return new ArrayList<>(0);
         }
         List<String> allProductName = mFishAppProcess.toMainActivity(mADBProcess, deviceAddress)
@@ -69,7 +69,7 @@ public class DeviceProcess implements IAndroidDeviceProcess {
     @Override
     public void postProduct(UIPostBean uiPostBean) {
 
-        if (mFishAppProcess == null) {
+        if (mFishAppProcess == null || !isInstallFishApp()) {
             return;
         }
 
@@ -82,7 +82,7 @@ public class DeviceProcess implements IAndroidDeviceProcess {
     @Override
     public void deleteProduct(List<String> productName) {
 
-        if (mFishAppProcess == null) {
+        if (mFishAppProcess == null || !isInstallFishApp()) {
             return;
         }
         mFishAppProcess.toMainActivity(mADBProcess, deviceAddress)
@@ -93,7 +93,7 @@ public class DeviceProcess implements IAndroidDeviceProcess {
 
     @Override
     public void startFishApp() {
-        if (mFishAppProcess == null) {
+        if (mFishAppProcess == null || !isInstallFishApp()) {
             return;
         }
     }
@@ -104,17 +104,19 @@ public class DeviceProcess implements IAndroidDeviceProcess {
             return;
         }
         // TODO: 2019-08-25 确认闲鱼安装
-        if (!mADBProcess.adbIdleFishIsInstance(deviceAddress)) {
+        if (!isInstallFishApp()) {
 //            mADBProcess.adbIdleFishInstance(deviceAddress, );
         }
     }
 
     @Override
+    public boolean isInstallFishApp() {
+        return isConnect && mADBProcess.adbIdleFishIsInstance(deviceAddress);
+    }
+
+    @Override
     public void deleteFishApp() {
-        if (!isConnect) {
-            return;
-        }
-        if (mADBProcess.adbIdleFishIsInstance(deviceAddress)) {
+        if (isInstallFishApp()) {
             mADBProcess.adbIdleFishUNInstance(deviceAddress);
         }
     }

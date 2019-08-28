@@ -1,4 +1,4 @@
-package browsers.impls;
+package browsers.impls.manAll;
 
 import browsers.BrowserUtils;
 import browsers.beans.ProductInfoBean;
