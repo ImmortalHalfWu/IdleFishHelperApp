@@ -1,66 +1,49 @@
-package browsers.impls.manAll;
+package browsers.queues;
 
-import Utils.FileUtils;
 import browsers.BrowserUtils;
 import browsers.beans.ProductInfoBean;
 import browsers.interfaces.BrowsersInterface;
-import browsers.interfaces.FinishLoadProcessInterface;
-import com.google.gson.Gson;
 import com.teamdev.jxbrowser.chromium.dom.By;
 import com.teamdev.jxbrowser.chromium.dom.DOMDocument;
 import com.teamdev.jxbrowser.chromium.dom.DOMElement;
 import com.teamdev.jxbrowser.chromium.dom.DOMNode;
 import com.teamdev.jxbrowser.chromium.events.FinishLoadingEvent;
 
-import java.util.LinkedHashSet;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static com.teamdev.jxbrowser.chromium.dom.DOMNodeType.ElementNode;
 
-public class ManManBuyFinishLoadProcess implements FinishLoadProcessInterface {
+public class ManManBuyAllPageProcess implements NewLoadHtmlRequestQueue.LoadHtmlProcess {
 
-    private final static String PROCESS_URL_START = "http://baicai.manmanbuy.com/";
-    private final static String PROCESS_URL = PROCESS_URL_START + "Default.aspx?PageID=";
+    private Set<ProductInfoBean> productInfoBeanLinkedHashSet;
+    private final static String PROCESS_URL = "http://baicai.manmanbuy.com/Default.aspx?PageID=";
+    private String mUrl;
+    private int page;
+    private static int all;
 
-    private LinkedHashSet<ProductInfoBean> productInfoBeanLinkedHashSet = new LinkedHashSet<>();
-    private int manManBuyLoadIndex = 0;
-
-    @Override
-    public boolean canProcess(FinishLoadingEvent event, String url, DOMDocument domDocument, BrowsersInterface browser) {
-        return url.startsWith(PROCESS_URL_START);
+    public ManManBuyAllPageProcess(int page) {
+        this.page = page;
+        this.mUrl = PROCESS_URL + page;
+        productInfoBeanLinkedHashSet = new HashSet<>();
     }
 
     @Override
-    public boolean process(String productInfoSavePath,
-                           List<ProductInfoBean> productInfoBeans,
-                           FinishLoadingEvent event,
-                           String url,
-                           DOMDocument domDocument,
-                           BrowsersInterface browser) {
+    public boolean canProcess(String url) {
+        return mUrl.equals(url);
+    }
 
-        if (url.equals(PROCESS_URL_START)) {
-            loadNextWebPage(browser);
-            return true;
-        }
+    @Override
+    public String getUrl() {
+        return mUrl;
+    }
+
+    @Override
+    public boolean process(FinishLoadingEvent event, String resultUrl, DOMDocument domDocument, BrowsersInterface browser) {
+        BrowserUtils.log(page);
 
         DOMElement container = domDocument.findElement(By.id("container"));
-
-        if (container.getInnerText().contains("没有搜到您要的商品")) {
-
-            productInfoBeans.clear();
-            productInfoBeans.addAll(productInfoBeanLinkedHashSet);
-            sortProductForPriceAndOrderNum(productInfoBeans);
-
-            BrowserUtils.logLine();
-            BrowserUtils.log("查找完所有慢慢买商品：总计" + productInfoBeans.size());
-            BrowserUtils.logLine();
-
-            FileUtils.fileLinesWrite(productInfoSavePath, new Gson().toJson(productInfoBeans), false);
-
-            browser.loadURL(productInfoBeans.get(0).getYhqUrl());
-
-            return true;
-        }
 
         List<DOMNode> children = container.getChildren();
         for (DOMNode node :
@@ -92,9 +75,9 @@ public class ManManBuyFinishLoadProcess implements FinishLoadProcessInterface {
                     DOMElement goBuyAElement = goBuyElement.findElement(By.tagName("a"));
                     if ((yhqUrl = goBuyAElement.getAttributes().get("href")).contains("ProductDetail.aspx")) {
                         BrowserUtils.logErroLine();
-                        BrowserUtils.log("优惠卷URL错误, 放弃此商品" + node.getTextContent());
+//                        BrowserUtils.log("优惠卷URL错误, 放弃此商品" + node.getTextContent());
                         BrowserUtils.logErroLine();
-                        return true;
+                        continue;
                     }
 
 
@@ -128,7 +111,9 @@ public class ManManBuyFinishLoadProcess implements FinishLoadProcessInterface {
                     productInfoBean.setPriceCurrent(Double.parseDouble(priceCurrent));
                     productInfoBean.setPriceOld(Double.parseDouble(priceOld));
                     productInfoBean.setProductInfo("  [全新包邮]  " + productInfo);
+//                    BrowserUtils.log(productInfoBean.getProductInfo());
                     productInfoBeanLinkedHashSet.add(productInfoBean);
+
 
                 } catch (Exception e) {
                     BrowserUtils.logErroLine();
@@ -139,22 +124,9 @@ public class ManManBuyFinishLoadProcess implements FinishLoadProcessInterface {
 
             }
         }
-
-        loadNextWebPage(browser);
+        BrowserUtils.log(page + "over" + ++all);
+        ManManBuyModel.instance().addManManBuyProducts(productInfoBeanLinkedHashSet);
 
         return true;
-    }
-
-    @Override
-    public boolean productIsLoadComplete() {
-        return false;
-    }
-
-    private void loadNextWebPage(BrowsersInterface browser) {
-        browser.loadURL(PROCESS_URL + ++manManBuyLoadIndex);
-    }
-
-    private void sortProductForPriceAndOrderNum(List<ProductInfoBean> productInfoBeans) {
-        BrowserUtils.sortProductForPriceAndOrderNum(productInfoBeans);
     }
 }

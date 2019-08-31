@@ -100,10 +100,10 @@ public class ProductInfoBean {
     @Override
     public String toString() {
         return
-//                imgSrcUrls + '\t' +
+                buyUrl + '\t' +
                 yhqUrl + '\t' +
-                productName + '\t' + '\t' + priceCurrent + '\t' + '\t' + priceOld + '\t' + '\t' +
-                orderNum + "\n";
+                productName + '\t' + '\t' + priceCurrent + '\t' + '\t' + priceOld + '\t' + '\t' + yhqEndTime + '\t' + '\t' +
+                        orderNum + "\n";
     }
 
     @Override

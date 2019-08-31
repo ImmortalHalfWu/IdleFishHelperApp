@@ -3,13 +3,13 @@ package browsers.impls;
 import browsers.BrowserUtils;
 import browsers.interfaces.BrowsersInterface;
 import browsers.interfaces.MBrowserLoadListener;
+import browsers.queues.NewLoadHtmlRequestQueue;
 import com.teamdev.jxbrowser.chromium.Browser;
 import com.teamdev.jxbrowser.chromium.dom.DOMDocument;
 import com.teamdev.jxbrowser.chromium.events.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class MyBrowserLoadListener extends LoadAdapter {
 
@@ -53,10 +53,11 @@ public class MyBrowserLoadListener extends LoadAdapter {
     }
 
     private BrowsersInterface browsersInterface = new BrowsersInterface() {
+
         @Override
-        public void loadURL(String url) {
+        public void loadURL(NewLoadHtmlRequestQueue.LoadHtmlProcess url) {
             if (browser != null) {
-                browser.loadURL(url);
+//                browser.loadURL(url.canProcess());
             }
         }
 

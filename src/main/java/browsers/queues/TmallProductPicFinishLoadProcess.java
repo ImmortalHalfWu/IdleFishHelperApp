@@ -1,4 +1,4 @@
-package browsers.impls.manAll;
+package browsers.queues;
 
 import browsers.BrowserUtils;
 import browsers.beans.ProductInfoBean;
@@ -27,7 +27,7 @@ public class TmallProductPicFinishLoadProcess implements ProductPicProcessInterf
         DOMElement element = documentElement.findElement(By.className("content ke-post"));
         List<DOMElement> imgs = element.findElements(By.tagName("img"));
         productInfoBean.setImgSrcUrls(BrowserUtils.findTmailTaoBaoProductImg(imgs));
-        BrowserUtils.log("天猫查找图片完成 ： " + productInfoBean.getImgSrcUrls());
+//        BrowserUtils.log("天猫查找图片完成 ： " + productInfoBean.getImgSrcUrls().size());
         // 产品标签
 //            DOMElement j_attrUL = documentElement.findElement(By.id("J_AttrUL"));
 //            List<DOMElement> lis = j_attrUL.findElements(By.tagName("li"));
@@ -44,6 +44,7 @@ public class TmallProductPicFinishLoadProcess implements ProductPicProcessInterf
 
     @Override
     public boolean canFindPicElement(DOMDocument domDocument) {
-        return domDocument.findElement(By.className("content ke-post")).getInnerText().contains("描述加载");
+        DOMElement element = domDocument.findElement(By.className("content ke-post"));
+        return element != null && element.getInnerText().contains("描述加载");
     }
 }

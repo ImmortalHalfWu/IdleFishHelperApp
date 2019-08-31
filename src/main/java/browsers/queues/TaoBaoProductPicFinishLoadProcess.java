@@ -1,4 +1,4 @@
-package browsers.impls.manAll;
+package browsers.queues;
 
 import browsers.BrowserUtils;
 import browsers.beans.ProductInfoBean;
@@ -27,7 +27,7 @@ public class TaoBaoProductPicFinishLoadProcess implements ProductPicProcessInter
         DOMElement element = documentElement.findElement(By.id("J_DivItemDesc")).findElement(By.tagName("p"));
         List<DOMElement> imgs = element.findElements(By.tagName("img"));
         productInfoBean.setImgSrcUrls(BrowserUtils.findTmailTaoBaoProductImg(imgs));
-        BrowserUtils.log("淘宝查找图片完成 ： " + productInfoBean.getImgSrcUrls());
+        BrowserUtils.log("淘宝查找图片完成 ： " + productInfoBean.getImgSrcUrls().size());
         // 产品标签
 //            DOMElement j_attrUL = documentElement.findElement(By.className("attributes-list"));
 //            List<DOMElement> lis = j_attrUL.findElements(By.tagName("li"));

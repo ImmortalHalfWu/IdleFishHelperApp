@@ -20,6 +20,9 @@ public class FileUtils {
     public final static String DIR_PATH_IMG = DIR_PATH_ROOT + File.separator + "imgs" + File.separator;
     public final static String DIR_PATH_XML = DIR_PATH_ROOT + File.separator + "xmls" + File.separator;
     public final static String DIR_PATH_JSON = DIR_PATH_ROOT + File.separator + "jsons" + File.separator;
+    public final static String DIR_PATH_WEB = DIR_PATH_ROOT + File.separator + "webs" + File.separator;
+
+
 
     public final static String FILE_NAME_NEW_PRODUCT_JSON = "NewProductJson.json";
     public final static String FILE_NAME_POSTED_PRODUCT_JSON = "PostedProductJson.json";
@@ -29,6 +32,7 @@ public class FileUtils {
         mkDir(DIR_PATH_IMG);
         mkDir(DIR_PATH_XML);
         mkDir(DIR_PATH_JSON);
+        mkDir(DIR_PATH_WEB);
     }
 
     /**
@@ -71,6 +75,16 @@ public class FileUtils {
     public static String createNewProductInfoFile(String deviceId) {
         String s = DIR_PATH_JSON + deviceId + FILE_NAME_NEW_PRODUCT_JSON;
         mkFile(s);
+        return s;
+    }
+
+    /**
+     * @param deviceId 设备id
+     * @return 设备对应的web文件路径
+     */
+    public static String createNewWebCacheFile(String deviceId) {
+        String s = DIR_PATH_WEB + deviceId + File.separator;
+        mkDir(s);
         return s;
     }
 
