@@ -1,13 +1,16 @@
-package browsers.queues;
+package browsers.impls.yhqAndPic;
 
 import browsers.BrowserUtils;
 import browsers.beans.ProductInfoBean;
+import browsers.impls.yhqAndPic.TaoBaoProductPicFinishLoadProcess;
+import browsers.impls.yhqAndPic.TmallProductPicFinishLoadProcess;
 import browsers.interfaces.BrowsersInterface;
+import browsers.interfaces.ManManBuyLoadHtmlProcess;
 import browsers.interfaces.ProductPicProcessInterface;
 import com.teamdev.jxbrowser.chromium.dom.DOMDocument;
 import com.teamdev.jxbrowser.chromium.events.FinishLoadingEvent;
 
-public class ProductPicLoadProcess implements NewLoadHtmlRequestQueue.LoadHtmlProcess {
+public class ProductPicLoadProcess implements ManManBuyLoadHtmlProcess {
 
     private String url;
     private ProductInfoBean productInfoBean;
@@ -41,9 +44,9 @@ public class ProductPicLoadProcess implements NewLoadHtmlRequestQueue.LoadHtmlPr
     }
 
     @Override
-    public boolean process(FinishLoadingEvent event, String resultUrl, DOMDocument domDocument, BrowsersInterface browser) {
+    public ProductInfoBean process(FinishLoadingEvent event, String resultUrl, DOMDocument domDocument, BrowsersInterface browser) {
         if (currentProcess == null) {
-            return false;
+            return null;
         }
 
         int scrollCount = 1;
@@ -84,20 +87,25 @@ public class ProductPicLoadProcess implements NewLoadHtmlRequestQueue.LoadHtmlPr
                 }
 //                BrowserUtils.log("商品详情页，页面滚动第" + scrollCount + "次");
                 if (++scrollCount > 10) {
-                    return false;
+                    return null;
                 }
-            } while (currentProcess.canFindPicElement(browser.getDOMDocument()));
+            } while (!currentProcess.canFindPicElement(browser.getDOMDocument()));
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            BrowserUtils.log(domDocument.getDocumentElement().getInnerHTML());
+            BrowserUtils.log("图像抓取滚动异常：" + url);
+            return null;
         }
 
         try {
-            return currentProcess.process(productInfoBean, event, url, domDocument, browser);
+            currentProcess.process(productInfoBean, event, url, domDocument, browser);
+            return productInfoBean;
         } catch (Exception e) {
             e.printStackTrace();
+            BrowserUtils.log(domDocument.getDocumentElement().getInnerHTML());
             BrowserUtils.log("图像抓取异常：" + url);
+
+            return null;
         }
-        return false;
     }
 }

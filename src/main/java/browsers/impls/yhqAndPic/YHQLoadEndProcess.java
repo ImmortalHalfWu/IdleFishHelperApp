@@ -1,8 +1,10 @@
-package browsers.queues;
+package browsers.impls.yhqAndPic;
 
 import Utils.FileUtils;
 import browsers.BrowserUtils;
 import browsers.beans.ProductInfoBean;
+import browsers.exceptions.ManLoadHtmlException;
+import browsers.impls.manAll.ManManBuyAllModel;
 import browsers.interfaces.BrowsersInterface;
 import com.google.gson.Gson;
 import com.teamdev.jxbrowser.chromium.dom.DOMDocument;
@@ -17,10 +19,10 @@ public class YHQLoadEndProcess extends YHQLoadProcess {
     }
 
     @Override
-    public boolean process(FinishLoadingEvent event, String resultUrl, DOMDocument domDocument, BrowsersInterface browser) {
-        boolean process = super.process(event, resultUrl, domDocument, browser);
+    public ProductInfoBean process(FinishLoadingEvent event, String resultUrl, DOMDocument domDocument, BrowsersInterface browser) throws ManLoadHtmlException {
+        ProductInfoBean process = super.process(event, resultUrl, domDocument, browser);
 
-        List<ProductInfoBean> allProduct = ManManBuyModel.instance().getAllProduct();
+        List<ProductInfoBean> allProduct = ManManBuyAllModel.instance().getAllProduct();
 //        int size = allProduct.size();
 
         BrowserUtils.log("优惠券查询完毕：");

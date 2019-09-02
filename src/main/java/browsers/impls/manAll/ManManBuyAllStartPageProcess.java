@@ -1,7 +1,8 @@
-package browsers.queues;
+package browsers.impls.manAll;
 
 import browsers.BrowserUtils;
 import browsers.interfaces.BrowsersInterface;
+import browsers.queues.NewLoadHtmlRequestQueue;
 import com.teamdev.jxbrowser.chromium.dom.By;
 import com.teamdev.jxbrowser.chromium.dom.DOMDocument;
 import com.teamdev.jxbrowser.chromium.dom.DOMElement;
@@ -28,7 +29,7 @@ public class ManManBuyAllStartPageProcess implements NewLoadHtmlRequestQueue.Loa
         int maxPageCount = Integer.parseInt(pageString);
         BrowserUtils.log(maxPageCount);
 
-        ManManBuyModel.instance().setMaxProductCount(maxPageCount);
+        ManManBuyAllModel.instance().setMaxProductCount(maxPageCount);
 
         for (int i = 1; i < maxPageCount; i++) {
             browser.loadURL(new ManManBuyAllPageProcess(i));

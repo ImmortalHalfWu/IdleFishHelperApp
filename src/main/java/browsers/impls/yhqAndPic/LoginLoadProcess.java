@@ -1,8 +1,10 @@
-package browsers.queues;
+package browsers.impls.yhqAndPic;
 
 import browsers.interfaces.BrowsersInterface;
+import browsers.queues.NewLoadHtmlRequestQueue;
 import com.teamdev.jxbrowser.chromium.dom.By;
 import com.teamdev.jxbrowser.chromium.dom.DOMDocument;
+import com.teamdev.jxbrowser.chromium.dom.DOMElement;
 import com.teamdev.jxbrowser.chromium.events.FinishLoadingEvent;
 
 public class LoginLoadProcess implements NewLoadHtmlRequestQueue.LoadHtmlProcess {
@@ -35,8 +37,10 @@ public class LoginLoadProcess implements NewLoadHtmlRequestQueue.LoadHtmlProcess
     public boolean process(FinishLoadingEvent event, String resultUrl, DOMDocument domDocument, BrowsersInterface browser) {
 
 //        BrowserUtils.log(domDocument.getDocumentElement().getInnerText());
-
-        domDocument.findElement(By.id("sufei-dialog-close")).click();
+        DOMElement element = domDocument.findElement(By.id("sufei-dialog-close"));
+        if (element != null) {
+            element.click();
+        }
 
         return true;
     }

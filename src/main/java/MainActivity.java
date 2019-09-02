@@ -1,5 +1,9 @@
 import Utils.FileUtils;
 import browsers.BrowserUtils;
+import browsers.impls.manHot.ManManBuyHotStartPageProcess;
+import browsers.impls.yhqAndPic.AiTaoBaoLoadProcess;
+import browsers.impls.yhqAndPic.LoginLoadProcess;
+import browsers.queues.MLoadFinishAdapter;
 import browsers.queues.*;
 import com.teamdev.jxbrowser.chromium.*;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
@@ -10,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.math.BigInteger;
+
 
 
 public class MainActivity {
@@ -133,7 +138,7 @@ public class MainActivity {
 
 
         //窗体大小
-        frame.setSize(1500, 800);
+        frame.setSize(1000, 400);
         // 固定大小不可改
         frame.setResizable(false);
         // 标题
@@ -146,10 +151,13 @@ public class MainActivity {
         MLoadFinishAdapter.registerStaticLoadHtmlProcee(AiTaoBaoLoadProcess.getInstance());
         MLoadFinishAdapter.registerStaticLoadHtmlProcee(LoginLoadProcess.getInstance());
 
-        for (int i = 0; i <= 10; i++) {
+        for (int i = 0; i < 10; i++) {
             BrowserContextParams params = new BrowserContextParams(FileUtils.createNewWebCacheFile(i + ""));
             BrowserContext context = new BrowserContext(params);
             Browser browser1 = new Browser(BrowserType.LIGHTWEIGHT,context);
+            if (browser == null) {
+                browser = browser1;
+            }
             browser1.setDialogHandler(new DialogHandler() {
                 @Override
                 public void onAlert(DialogParams dialogParams) {
@@ -203,7 +211,7 @@ public class MainActivity {
                 }
             });
             BrowserView view1 = new BrowserView(browser1);
-            view1.setBounds(i * 10, 0, 10, 10);
+            view1.setBounds(i * 100, 0, 100, 400);
             frame.getContentPane().add(view1);
 //            browser1.loadURL("www.baidu.com");
 
@@ -215,63 +223,56 @@ public class MainActivity {
 
         }
 
-//        NewLoadHtmlRequestQueue.instance().put(new NewLoadHtmlRequestQueue.LoadHtmlProcess() {
-//            @Override
-//            public String getUrl() {
-//                return "https://uland.taobao.com/coupon/edetail?e=sYED98OCwHoGQASttHIRqR2CjuSDi%2FFj%2BtrJjxWNCKLx9B8gNStCk%2FY53z6DJT1AVFbcss2PR2z%2B3CZs4frrDDEhJpUUrcnYSVNZJ6IP%2BBuN5rPifjd8eXY9x3IctcCWLspxGy3zBjY8IeN8lvhRA2lzrR4%2Bfrcbz%2F6VGMQg8XmWUr9yffI9Muib2QyKSVw%2F7hHfa%2F83Y2I%3D&traceId=0b17545e15670678979565381e&union_lens=lensId:0b156441_0be0_16cdc868089_b4fb&xId=ovXCd2APTbzf62COVc7xQo5AwmqfusO59mkS4XW99d3JQr5ooCYHvpTWlvqcY1TmjzSUfu2CyuNE8Saz7AC86u&v=yingxiao";
-//            }
-//
-//            @Override
-//            public boolean canProcess(String url) {
-//                return true;
-//            }
-//
-//            @Override
-//            public boolean process(FinishLoadingEvent event, String resultUrl, DOMDocument domDocument, BrowsersInterface browser) {
-//                if (domDocument.findElement(By.className("item-info-con")) != null && !domDocument.getDocumentElement().getInnerHTML().contains("优惠券已失效")) {
-//                    DOMElement element1 = domDocument.findElement(By.className("coupon-date"));
-//                    String endTime = element1.getInnerText().split("-")[1];
-//                    long innerText = BrowserUtils.timeToStamp(endTime);              // 优惠券到期时间
-//
-//                    // TODO: 2019-08-17 这部分的超时过滤太夸张
-//                    if (innerText >= BrowserUtils.timeTomorrowBegin()) {
-//                        DOMElement a = domDocument.findElement(By.className("item-info-con")).findElement(By.tagName("a"));                                    // 淘宝链接
-//                        String href = a.getAttribute("href");
-//                        String name = a.findElement(By.className("title")).getInnerText().replace(" ", "").replace("\n", "");
-//                        name = BrowserUtils.formatProductName(name);
-//
-//                        BrowserUtils.log("有效优惠券信息：" + name + "_" + endTime);
-//                    } else {
-//                        BrowserUtils.log("优惠券过期:");
-//                    }
-//
-//                } else {
-//                    BrowserUtils.log("未查询到优惠券信息");
-//                    try {
-//                        if (domDocument.getDocumentElement().getInnerHTML().contains("滑动一下马上回来")) {
-//                            Thread.sleep(60000);
-//                        } else {
-//                        }
-//
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//                return false;
-//            }
-//        });
-
 //        browsers.beans.ProductInfoBean[] productInfoBeans = new Gson().fromJson(
 //                FileUtils.readFile(FileUtils.createNewProductInfoFile("123")),
 //                browsers.beans.ProductInfoBean[].class);
 //        System.out.println(productInfoBeans.length);
+//        for (browsers.beans.ProductInfoBean product : productInfoBeans
+//                ) {
+//            int size = product.getImgSrcUrls().size();
+//            if (size < 2) {
+//                String buyUrl = product.getBuyUrl();
+//                System.out.println(product.getBuyUrl());
+
+//        browser.addLoadListener(new LoadAdapter() {
+//            @Override
+//            public void onFinishLoadingFrame(FinishLoadingEvent event) {
+//                System.out.println(event.getValidatedURL());
+//                super.onFinishLoadingFrame(event);
+//            }
+//        });
+        // http://baicai.manmanbuy.com/Default_New.aspx?PageID=1&protype=jiukai&orderby=id
+//                NewLoadHtmlRequestQueue.instance().put(new NewLoadHtmlRequestQueue.LoadHtmlProcess() {
+//                    @Override
+//                    public String getUrl() {
+//                        return "http://baicai.manmanbuy.com/cl_0_jiukai.aspx";
+//                    }
 //
-//        ManManBuyModel.instance().addManManBuyProducts(Arrays.asList(productInfoBeans));
-        NewLoadHtmlRequestQueue.instance().put(new ManManBuyAllStartPageProcess());
+//                    @Override
+//                    public boolean canProcess(String url) {
+//                        return url.equals("http://baicai.manmanbuy.com/cl_0_jiukai.aspx");
+//                    }
+//
+//                    @Override
+//                    public boolean process(FinishLoadingEvent event, String resultUrl, DOMDocument domDocument, BrowsersInterface browser) {
+//                        // content ke-post  详情图
+//                        // J_AttrUL  产品参数，用于标签
+//                        return true;
+//                    }
+//                });
+//
+//
+//            }
+//        }
+
+//        ManManBuyAllModel.instance().addManManBuyProducts(Arrays.asList(productInfoBeans));
+//        TaoBaoTmallYHQImagProcess.startFindYHQAndPIC();
+        NewLoadHtmlRequestQueue.instance().put(new ManManBuyHotStartPageProcess());
 
 //        ProductInfoBean[] productInfoBeans = new Gson().fromJson(
 //                FileUtils.readFile(FileUtils.createNewProductInfoFile("123")),
 //                ProductInfoBean[].class);
+
 //        int size = productInfoBeans.length;
 //        for (int i = 0; i < size - 1; i++) {
 //            ProductInfoBean productInfoBean = productInfoBeans[i];

@@ -1,6 +1,7 @@
 package browsers.queues;
 
 import Utils.FileUtils;
+import Utils.ThreadPoolManager;
 import com.teamdev.jxbrowser.chromium.Browser;
 
 import java.util.concurrent.LinkedBlockingQueue;
@@ -77,7 +78,7 @@ public class BrowserQueue implements Runnable{
         if (isRunning) {
             return;
         }
-        new Thread(this).start();
+        ThreadPoolManager.instance().post(this);
     }
 
 }

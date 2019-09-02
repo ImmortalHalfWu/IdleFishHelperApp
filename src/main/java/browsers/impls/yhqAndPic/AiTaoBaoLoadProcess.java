@@ -1,6 +1,7 @@
-package browsers.queues;
+package browsers.impls.yhqAndPic;
 
 import browsers.interfaces.BrowsersInterface;
+import browsers.queues.NewLoadHtmlRequestQueue;
 import com.teamdev.jxbrowser.chromium.dom.DOMDocument;
 import com.teamdev.jxbrowser.chromium.events.FinishLoadingEvent;
 

@@ -1,8 +1,9 @@
-package browsers.queues;
+package browsers.impls.manAll;
 
 import browsers.BrowserUtils;
 import browsers.beans.ProductInfoBean;
 import browsers.interfaces.BrowsersInterface;
+import browsers.queues.NewLoadHtmlRequestQueue;
 import com.teamdev.jxbrowser.chromium.dom.By;
 import com.teamdev.jxbrowser.chromium.dom.DOMDocument;
 import com.teamdev.jxbrowser.chromium.dom.DOMElement;
@@ -125,7 +126,7 @@ public class ManManBuyAllPageProcess implements NewLoadHtmlRequestQueue.LoadHtml
             }
         }
         BrowserUtils.log(page + "over" + ++all);
-        ManManBuyModel.instance().addManManBuyProducts(productInfoBeanLinkedHashSet);
+        ManManBuyAllModel.instance().addManManBuyProducts(productInfoBeanLinkedHashSet);
 
         return true;
     }

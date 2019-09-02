@@ -1,23 +1,23 @@
-package browsers.queues;
+package browsers.impls.manAll;
 
 import browsers.beans.ProductInfoBean;
+import com.sun.istack.internal.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
-public class ManManBuyModel {
+public class ManManBuyAllModel {
 
     private int maxProductCount;
-    private static ManManBuyModel manManBuyModel;
+    private static ManManBuyAllModel manManBuyModel;
 
-    public static ManManBuyModel instance() {
+    public static ManManBuyAllModel instance() {
         if (manManBuyModel == null) {
-            synchronized (ManManBuyModel.class) {
+            synchronized (ManManBuyAllModel.class) {
                 if (manManBuyModel == null) {
-                    manManBuyModel = new ManManBuyModel();
+                    manManBuyModel = new ManManBuyAllModel();
                 }
             }
         }
@@ -27,7 +27,7 @@ public class ManManBuyModel {
     private final List<ProductInfoBean> productInfoBeans;
 
 
-    private ManManBuyModel() {
+    private ManManBuyAllModel() {
         this.productInfoBeans = Collections.synchronizedList(new ArrayList<>());
     }
 
@@ -52,6 +52,13 @@ public class ManManBuyModel {
         if (productInfoBean != null && productInfoBean.size() > 0) {
             productInfoBeans.removeAll(productInfoBean);
         }
+    }
+
+    public @Nullable ProductInfoBean get(int positon) {
+        if (positon < productInfoBeans.size()) {
+            return productInfoBeans.get(positon);
+        }
+        return null;
     }
 
     public int getProductCurrentCount() {
