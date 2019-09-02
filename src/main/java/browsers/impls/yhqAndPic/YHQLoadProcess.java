@@ -95,7 +95,7 @@ public class YHQLoadProcess implements ManManBuyLoadHtmlProcess {
 //            if (productInfoBean != null) {
 //                browser.loadURL(new ProductPicLoadEndProcess(productInfoBean));
 //            } else {
-//                FileUtils.writeText(FileUtils.createNewProductInfoFile("123"), new Gson().toJson(ManManBuyAllModel.instance().getAllProduct()), false);
+//                FileUtils.writeText(FileUtils.createNewProductInfoFile("ALL"), new Gson().toJson(ManManBuyAllModel.instance().getAllProduct()), false);
 //            }
 //            return;
 //        }

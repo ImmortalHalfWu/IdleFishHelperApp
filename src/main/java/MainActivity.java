@@ -69,7 +69,7 @@ public class MainActivity {
 //        String s = "5ENDU19214004179";
 
 //        browsers.beans.ProductInfoBean[] productInfoBeans = new Gson().fromJson(
-//                FileUtils.readFile(FileUtils.createNewProductInfoFile("123")),
+//                FileUtils.readFile(FileUtils.createNewProductInfoFile("ALL")),
 //                browsers.beans.ProductInfoBean[].class);
 //        System.out.println(productInfoBeans.length);
 
@@ -224,7 +224,7 @@ public class MainActivity {
         }
 
 //        browsers.beans.ProductInfoBean[] productInfoBeans = new Gson().fromJson(
-//                FileUtils.readFile(FileUtils.createNewProductInfoFile("123")),
+//                FileUtils.readFile(FileUtils.createNewProductInfoFile("ALL")),
 //                browsers.beans.ProductInfoBean[].class);
 //        System.out.println(productInfoBeans.length);
 //        for (browsers.beans.ProductInfoBean product : productInfoBeans
@@ -270,7 +270,7 @@ public class MainActivity {
         NewLoadHtmlRequestQueue.instance().put(new ManManBuyHotStartPageProcess());
 
 //        ProductInfoBean[] productInfoBeans = new Gson().fromJson(
-//                FileUtils.readFile(FileUtils.createNewProductInfoFile("123")),
+//                FileUtils.readFile(FileUtils.createNewProductInfoFile("ALL")),
 //                ProductInfoBean[].class);
 
 //        int size = productInfoBeans.length;

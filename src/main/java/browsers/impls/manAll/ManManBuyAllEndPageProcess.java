@@ -49,14 +49,14 @@ public class ManManBuyAllEndPageProcess extends ManManBuyAllPageProcess {
         }
         BrowserUtils.log(allProduct.toString());
 
-        FileUtils.writeText(FileUtils.createNewProductInfoFile("123"), new Gson().toJson(ManManBuyAllModel.instance().getAllProduct()), false);
+        FileUtils.writeText(FileUtils.createNewProductInfoFile("ALL"), new Gson().toJson(ManManBuyAllModel.instance().getAllProduct()), false);
 
         TaoBaoTmallYHQImagManager.getInstance()
                 .startFindYHQAndPIC(
                         ManManBuyAllModel.instance().getAllProduct(),
                         "ALLProduct",
                         (allProduct1, tag) -> {
-                            FileUtils.writeText(FileUtils.createNewProductInfoFile("123"), new Gson().toJson(allProduct1), false);
+                            FileUtils.writeText(FileUtils.createNewProductInfoFile("ALL"), new Gson().toJson(allProduct1), false);
                             BrowserUtils.log(tag + ":" + allProduct1.size());
                             BrowserUtils.log(allProduct1);
                         });

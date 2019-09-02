@@ -144,7 +144,7 @@ public class BrowserUtils {
     }
 
     @Nullable
-    public static ProductInfoBean findManManBuyProductInfo(DOMElement node) {
+    public static ProductInfoBean findManManBuyProductInfo(DOMNode node) {
 
         if (node == null) {
             return null;

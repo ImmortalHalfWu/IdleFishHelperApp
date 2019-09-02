@@ -2,10 +2,7 @@ package browsers.impls.yhqAndPic;
 
 import browsers.beans.ProductInfoBean;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class TaoBaoTmallYHQImagManager {
 
@@ -26,7 +23,7 @@ public class TaoBaoTmallYHQImagManager {
     private Map<Object, List<TaoBaoTmallYHQImagProcess.TaoBaoTmallYHQImagListener>> findYHQPicMap;
 
     private TaoBaoTmallYHQImagManager() {
-        this.findYHQPicMap = new HashMap<>();
+        this.findYHQPicMap = Collections.synchronizedMap(new HashMap<>());
     }
 
     public void startFindYHQAndPIC(List<ProductInfoBean> productInfoBeans, Object tag, TaoBaoTmallYHQImagProcess.TaoBaoTmallYHQImagListener listener) {
@@ -37,9 +34,8 @@ public class TaoBaoTmallYHQImagManager {
             List<TaoBaoTmallYHQImagProcess.TaoBaoTmallYHQImagListener> taoBaoTmallYHQImagListeners = new ArrayList<>();
             taoBaoTmallYHQImagListeners.add(listener);
             findYHQPicMap.put(tag, taoBaoTmallYHQImagListeners);
+            TaoBaoTmallYHQImagProcess.startFindYHQAndPIC(productInfoBeans, tag, taoBaoTmallYHQImagListener);
         }
-
-        TaoBaoTmallYHQImagProcess.startFindYHQAndPIC(productInfoBeans, tag, listener);
 
     }
 

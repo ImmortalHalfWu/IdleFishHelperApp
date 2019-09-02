@@ -19,7 +19,7 @@ public class ProductPicLoadEndProcess extends ProductPicLoadProcess {
         ProductInfoBean process = super.process(event, resultUrl, domDocument, browser);
 
         BrowserUtils.log("商品图片全部加载完毕");
-        FileUtils.writeText(FileUtils.createNewProductInfoFile("123"), new Gson().toJson(ManManBuyAllModel.instance().getAllProduct()), false);
+        FileUtils.writeText(FileUtils.createNewProductInfoFile("ALL"), new Gson().toJson(ManManBuyAllModel.instance().getAllProduct()), false);
 
         return process;
     }

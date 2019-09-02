@@ -26,7 +26,7 @@ public class YHQLoadEndProcess extends YHQLoadProcess {
 //        int size = allProduct.size();
 
         BrowserUtils.log("优惠券查询完毕：");
-        FileUtils.writeText(FileUtils.createNewProductInfoFile("123"), new Gson().toJson(allProduct), false);
+        FileUtils.writeText(FileUtils.createNewProductInfoFile("ALL"), new Gson().toJson(allProduct), false);
 
 //        BrowserUtils.log(allProduct.toString());
 //

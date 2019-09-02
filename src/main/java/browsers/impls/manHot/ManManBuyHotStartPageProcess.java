@@ -3,7 +3,6 @@ package browsers.impls.manHot;
 import Utils.FileUtils;
 import browsers.BrowserUtils;
 import browsers.beans.ProductInfoBean;
-import browsers.impls.manAll.ManManBuyAllModel;
 import browsers.impls.yhqAndPic.TaoBaoTmallYHQImagManager;
 import browsers.impls.yhqAndPic.TaoBaoTmallYHQImagProcess;
 import browsers.interfaces.BrowsersInterface;
@@ -12,7 +11,6 @@ import com.google.gson.Gson;
 import com.teamdev.jxbrowser.chromium.dom.By;
 import com.teamdev.jxbrowser.chromium.dom.DOMDocument;
 import com.teamdev.jxbrowser.chromium.dom.DOMElement;
-import com.teamdev.jxbrowser.chromium.dom.DOMNode;
 import com.teamdev.jxbrowser.chromium.events.FinishLoadingEvent;
 
 import java.util.ArrayList;
