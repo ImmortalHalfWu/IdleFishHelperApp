@@ -26,8 +26,14 @@ public class AndroidManager {
 
     private AndroidManager() {
         AndroidUtils.log("AndroidManager初始化....");
+        connectVM();
         refreshConnect();
         AndroidUtils.log("AndroidManager完成....");
+
+    }
+
+    private void connectVM() {
+        AndroidUtils.connectDeviceByAddress(Arrays.asList(AndroidUtils.VM_ADDRESS), ADBProcess.getInstance());
     }
 
     /**
@@ -37,9 +43,28 @@ public class AndroidManager {
 
         AndroidUtils.log("刷新设备连接状态....");
 
-
         List<String> deviceAddreByAdbResult = AndroidUtils.getDeviceAddreByAdbResult(adbProcess);
-        deviceAddreByAdbResult.addAll(Arrays.asList(AndroidUtils.deviceAddress));
+
+        if (deviceProcessMap.size() > 0) {
+            if (deviceAddreByAdbResult.size() == 0) {
+                deviceProcessMap.clear();
+            }
+            if (deviceAddreByAdbResult.size() > 0) {
+
+                List<String> hasAddress = new ArrayList<>();
+
+                for (String newAddress :
+                        deviceAddreByAdbResult) {
+
+                    if (deviceProcessMap.containsKey(newAddress)) {
+                        hasAddress.add(newAddress);
+                    }
+
+                }
+
+                deviceAddreByAdbResult.removeAll(hasAddress);
+            }
+        }
 
         for (String deviceAddre :
                 deviceAddreByAdbResult) {
@@ -95,6 +120,10 @@ public class AndroidManager {
 
     public List<IAndroidDeviceProcess> getAllDevices() {
         return new ArrayList<>(deviceProcessMap.values());
+    }
+
+    public List<String> getAllDevicesAddress() {
+        return new ArrayList<>(deviceProcessMap.keySet());
     }
 
     private @Nullable IAndroidDeviceProcess getDeviceByAddress(String deviceAddress) {

@@ -67,11 +67,11 @@ public class TaoBaoTmallYHQImagProcess implements NewLoadHtmlRequestQueue.LoadHt
 
         for (int i = 0; i < size - 1; i++) {
             ProductInfoBean productInfoBean = mList.get(i);
-            ThreadPoolManager.instance().postDelayForS(new TaoBaoTmallYHQImagProcess(productInfoBean, mList, removeProductInfo, listener, false, tag), i * 2f);
+            ThreadPoolManager.init().postDelayForS(new TaoBaoTmallYHQImagProcess(productInfoBean, mList, removeProductInfo, listener, false, tag), i * 2f);
         }
 
         ProductInfoBean productInfoBean = mList.get(size - 1);
-        ThreadPoolManager.instance().postDelayForS(new TaoBaoTmallYHQImagProcess(productInfoBean, mList, removeProductInfo, listener, true, tag), (size - 1) * 2f);
+        ThreadPoolManager.init().postDelayForS(new TaoBaoTmallYHQImagProcess(productInfoBean, mList, removeProductInfo, listener, true, tag), (size - 1) * 2f);
 
     }
 
@@ -79,7 +79,7 @@ public class TaoBaoTmallYHQImagProcess implements NewLoadHtmlRequestQueue.LoadHt
     public String getUrl() {
         if (currentType == TYPE_YHQ && isShield.get()) {
             BrowserUtils.log("被屏蔽，延时ing");
-            ThreadPoolManager.instance().postDelayForS(this, 60);
+            ThreadPoolManager.init().postDelayForS(this, 60);
             return "";
         }
         return url;
@@ -95,7 +95,7 @@ public class TaoBaoTmallYHQImagProcess implements NewLoadHtmlRequestQueue.LoadHt
 
 //        if (currentType == TYPE_YHQ && isShield.get()) {
 //            BrowserUtils.log("被屏蔽，延时ing");
-//            ThreadPoolManager.instance().postDelay(this, 50);
+//            ThreadPoolManager.init().postDelay(this, 50);
 //            return true;
 //        }
 
@@ -108,7 +108,7 @@ public class TaoBaoTmallYHQImagProcess implements NewLoadHtmlRequestQueue.LoadHt
                 if (!isShield.get()) {
                     isShield.set(true);
                     BrowserUtils.log("被屏蔽，开启延时");
-                    ThreadPoolManager.instance().postDelayForS(new Runnable() {
+                    ThreadPoolManager.init().postDelayForS(new Runnable() {
                         @Override
                         public void run() {
                             BrowserUtils.log("被屏蔽，延时结束");
@@ -116,7 +116,7 @@ public class TaoBaoTmallYHQImagProcess implements NewLoadHtmlRequestQueue.LoadHt
                         }
                     }, 59);
                 }
-                ThreadPoolManager.instance().postDelayForS(this, 60);
+                ThreadPoolManager.init().postDelayForS(this, 60);
                 return true;
             }
         }

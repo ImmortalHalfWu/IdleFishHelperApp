@@ -3,7 +3,7 @@ package browsers.impls.yhqAndPic;
 import Utils.FileUtils;
 import browsers.BrowserUtils;
 import browsers.beans.ProductInfoBean;
-import browsers.impls.manAll.ManManBuyAllModel;
+import browsers.impls.man.manAll.ManManBuyAllModel;
 import browsers.interfaces.BrowsersInterface;
 import com.google.gson.Gson;
 import com.teamdev.jxbrowser.chromium.dom.DOMDocument;
@@ -19,7 +19,7 @@ public class ProductPicLoadEndProcess extends ProductPicLoadProcess {
         ProductInfoBean process = super.process(event, resultUrl, domDocument, browser);
 
         BrowserUtils.log("商品图片全部加载完毕");
-        FileUtils.writeText(FileUtils.createNewProductInfoFile("ALL"), new Gson().toJson(ManManBuyAllModel.instance().getAllProduct()), false);
+        FileUtils.writeText(FileUtils.createJsonFile("ALL"), new Gson().toJson(ManManBuyAllModel.instance().getAllProduct()), false);
 
         return process;
     }

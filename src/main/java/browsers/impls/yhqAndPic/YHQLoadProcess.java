@@ -3,7 +3,7 @@ package browsers.impls.yhqAndPic;
 import browsers.BrowserUtils;
 import browsers.beans.ProductInfoBean;
 import browsers.exceptions.ManLoadHtmlException;
-import browsers.impls.manAll.ManManBuyAllModel;
+import browsers.impls.man.manAll.ManManBuyAllModel;
 import browsers.interfaces.BrowsersInterface;
 import browsers.interfaces.ManManBuyLoadHtmlProcess;
 import com.teamdev.jxbrowser.chromium.dom.By;
@@ -74,7 +74,7 @@ public class YHQLoadProcess implements ManManBuyLoadHtmlProcess {
         } else {
             BrowserUtils.log("未查询到优惠券信息" + productInfoBean.getProductInfo());
             if (domDocument.getDocumentElement().getTextContent().contains("滑动一下马上回来")) {
-//                    BrowserUtils.log("被检测到刷数据， 暂停1分钟, 队列等待：" + NewLoadHtmlRequestQueue.instance().size());
+//                    BrowserUtils.log("被检测到刷数据， 暂停1分钟, 队列等待：" + NewLoadHtmlRequestQueue.init().size());
 //                    Thread.sleep(30000);
 //                    BrowserUtils.log("1分钟完成，继续");
                 throw ManLoadHtmlException.newInstance(ManLoadHtmlException.CODE_SHIELD);
@@ -90,12 +90,12 @@ public class YHQLoadProcess implements ManManBuyLoadHtmlProcess {
     }
 
 //    private void loadNext(BrowsersInterface browser) {
-//        if (loadIndex >=  ManManBuyAllModel.instance().getProductCurrentCount()) {
+//        if (loadIndex >=  ManManBuyAllModel.init().getProductCurrentCount()) {
 //            BrowserUtils.log("优惠券已请求完成，有效：" + loadIndex);
 //            if (productInfoBean != null) {
 //                browser.loadURL(new ProductPicLoadEndProcess(productInfoBean));
 //            } else {
-//                FileUtils.writeText(FileUtils.createNewProductInfoFile("ALL"), new Gson().toJson(ManManBuyAllModel.instance().getAllProduct()), false);
+//                FileUtils.writeText(FileUtils.createNewProductInfoFile("ALL"), new Gson().toJson(ManManBuyAllModel.init().getAllProduct()), false);
 //            }
 //            return;
 //        }
@@ -104,11 +104,11 @@ public class YHQLoadProcess implements ManManBuyLoadHtmlProcess {
 //            browser.loadURL(new ProductPicLoadProcess(productInfoBean));
 //        }
 //
-//        List<ProductInfoBean> allProduct = ManManBuyAllModel.instance().getAllProduct();
+//        List<ProductInfoBean> allProduct = ManManBuyAllModel.init().getAllProduct();
 //
 //
 //        if (loadIndex < allProduct.size()) {
-//            ProductInfoBean productInfoBean = ManManBuyAllModel.instance().getAllProduct().get(loadIndex);
+//            ProductInfoBean productInfoBean = ManManBuyAllModel.init().getAllProduct().get(loadIndex);
 //
 //            try {
 //                Thread.sleep(loadIndex < 11 ? 1500 : 1000 - loadIndex);
@@ -119,7 +119,7 @@ public class YHQLoadProcess implements ManManBuyLoadHtmlProcess {
 //            browser.loadURL(new YHQLoadProcess(productInfoBean));
 //
 //        } else {
-//            ProductInfoBean productInfoBean = ManManBuyAllModel.instance().getAllProduct().get(loadIndex);
+//            ProductInfoBean productInfoBean = ManManBuyAllModel.init().getAllProduct().get(loadIndex);
 ////            browser.loadURL(new ProductPicLoadEndProcess(productInfoBean));
 //
 //            try {

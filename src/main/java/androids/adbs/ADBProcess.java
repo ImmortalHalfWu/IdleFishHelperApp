@@ -32,6 +32,11 @@ public class ADBProcess implements IADBProcess {
     }
 
     @Override
+    public boolean adbKeyBoardIsInstance(String deviceAddr) {
+        return ADBUtils.adbKeyBoardIsInstance(deviceAddr);
+    }
+
+    @Override
     public boolean adbIdleFishUNInstance(String deviceAddr) {
         return ADBUtils.adbIdleFishUNInstance(deviceAddr);
     }
@@ -39,6 +44,11 @@ public class ADBProcess implements IADBProcess {
     @Override
     public boolean adbIdleFishInstance(String deviceAddr, String apkPath) {
         return ADBUtils.adbIdleFishInstance(deviceAddr, apkPath);
+    }
+
+    @Override
+    public boolean adbKeyBoardInstance(String deviceAddr, String apkPath) {
+        return ADBUtils.adbKeyBoardInstance(deviceAddr, apkPath);
     }
 
     @Override

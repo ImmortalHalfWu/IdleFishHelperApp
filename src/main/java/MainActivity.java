@@ -1,12 +1,13 @@
 import Utils.FileUtils;
+import Utils.ThreadPoolManager;
 import browsers.BrowserUtils;
-import browsers.impls.manHot.ManManBuyHotStartPageProcess;
-import browsers.impls.yhqAndPic.AiTaoBaoLoadProcess;
-import browsers.impls.yhqAndPic.LoginLoadProcess;
-import browsers.queues.MLoadFinishAdapter;
+import browsers.beans.ProductInfoBean;
+import browsers.impls.man.ManManBuyCallBack;
+import browsers.impls.man.manHot.ManManBuyHotStartPageProcess;
 import browsers.queues.*;
 import com.teamdev.jxbrowser.chromium.*;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
+import main.InitApplication;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,10 +15,10 @@ import java.awt.event.ActionEvent;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.math.BigInteger;
+import java.util.List;
 
 
-
-public class MainActivity {
+public class MainActivity implements InitApplication.InitListener {
 
     static {
         try {
@@ -48,9 +49,11 @@ public class MainActivity {
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
             try {
-                FileUtils.init();
-//                AndroidManager.init();
-                new MainActivity();
+
+                MainActivity mainActivity = new MainActivity();
+                ThreadPoolManager.init().post(InitApplication.instance().setListener(mainActivity));
+                mainActivity.init();
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -68,9 +71,9 @@ public class MainActivity {
 //        咸鱼             下1299   左1140
 //        String s = "5ENDU19214004179";
 
-//        browsers.beans.ProductInfoBean[] productInfoBeans = new Gson().fromJson(
+//        browsers.config.ProductInfoBean[] productInfoBeans = new Gson().fromJson(
 //                FileUtils.readFile(FileUtils.createNewProductInfoFile("ALL")),
-//                browsers.beans.ProductInfoBean[].class);
+//                browsers.config.ProductInfoBean[].class);
 //        System.out.println(productInfoBeans.length);
 
 //
@@ -126,7 +129,6 @@ public class MainActivity {
 //        }
 
 //        int size = postedProduct.size();
-        init();
     }
 
     private void init() {
@@ -148,16 +150,10 @@ public class MainActivity {
         frame.setExtendedState(JFrame.MAXIMIZED_VERT);
         frame.setLocationByPlatform(true);
 
-        MLoadFinishAdapter.registerStaticLoadHtmlProcee(AiTaoBaoLoadProcess.getInstance());
-        MLoadFinishAdapter.registerStaticLoadHtmlProcee(LoginLoadProcess.getInstance());
-
         for (int i = 0; i < 10; i++) {
-            BrowserContextParams params = new BrowserContextParams(FileUtils.createNewWebCacheFile(i + ""));
+            BrowserContextParams params = new BrowserContextParams(FileUtils.createWebCacheDir(i + ""));
             BrowserContext context = new BrowserContext(params);
             Browser browser1 = new Browser(BrowserType.LIGHTWEIGHT,context);
-            if (browser == null) {
-                browser = browser1;
-            }
             browser1.setDialogHandler(new DialogHandler() {
                 @Override
                 public void onAlert(DialogParams dialogParams) {
@@ -222,93 +218,12 @@ public class MainActivity {
             BrowserQueue.instance().put(browser1);
 
         }
-
-//        browsers.beans.ProductInfoBean[] productInfoBeans = new Gson().fromJson(
-//                FileUtils.readFile(FileUtils.createNewProductInfoFile("ALL")),
-//                browsers.beans.ProductInfoBean[].class);
-//        System.out.println(productInfoBeans.length);
-//        for (browsers.beans.ProductInfoBean product : productInfoBeans
-//                ) {
-//            int size = product.getImgSrcUrls().size();
-//            if (size < 2) {
-//                String buyUrl = product.getBuyUrl();
-//                System.out.println(product.getBuyUrl());
-
-//        browser.addLoadListener(new LoadAdapter() {
-//            @Override
-//            public void onFinishLoadingFrame(FinishLoadingEvent event) {
-//                System.out.println(event.getValidatedURL());
-//                super.onFinishLoadingFrame(event);
-//            }
-//        });
-        // http://baicai.manmanbuy.com/Default_New.aspx?PageID=1&protype=jiukai&orderby=id
-//                NewLoadHtmlRequestQueue.instance().put(new NewLoadHtmlRequestQueue.LoadHtmlProcess() {
-//                    @Override
-//                    public String getUrl() {
-//                        return "http://baicai.manmanbuy.com/cl_0_jiukai.aspx";
-//                    }
-//
-//                    @Override
-//                    public boolean canProcess(String url) {
-//                        return url.equals("http://baicai.manmanbuy.com/cl_0_jiukai.aspx");
-//                    }
-//
-//                    @Override
-//                    public boolean process(FinishLoadingEvent event, String resultUrl, DOMDocument domDocument, BrowsersInterface browser) {
-//                        // content ke-post  详情图
-//                        // J_AttrUL  产品参数，用于标签
-//                        return true;
-//                    }
-//                });
-//
-//
-//            }
-//        }
-
-//        ManManBuyAllModel.instance().addManManBuyProducts(Arrays.asList(productInfoBeans));
-//        TaoBaoTmallYHQImagProcess.startFindYHQAndPIC();
-        NewLoadHtmlRequestQueue.instance().put(new ManManBuyHotStartPageProcess());
-
-//        ProductInfoBean[] productInfoBeans = new Gson().fromJson(
-//                FileUtils.readFile(FileUtils.createNewProductInfoFile("ALL")),
-//                ProductInfoBean[].class);
-
-//        int size = productInfoBeans.length;
-//        for (int i = 0; i < size - 1; i++) {
-//            ProductInfoBean productInfoBean = productInfoBeans[i];
-//            NewLoadHtmlRequestQueue.instance().put(new ProductPicLoadProcess(productInfoBean));
-//        }
-//        NewLoadHtmlRequestQueue.instance().put(new ProductPicLoadEndProcess(productInfoBeans[size - 1]));
-
-//        for (ProductInfoBean bean :
-//                productInfoBeans) {
-//
-//        }
-
-//        browser = MyBrowser.instance()
-//                .registerBrowserLoadListener(
-//                        new MBrowserLoadListener() {
-//
-//                            @Override
-//                            public boolean onFinishLoadingFrame(FinishLoadingEvent event, String url, DOMDocument domDocument, BrowsersInterface browserInter) {
-//                                String html = browser.getHTML();
-//
-//                                DOMElement ctl00_contentPlaceHolder1_divpage = domDocument.findElement(By.id("ctl00_ContentPlaceHolder1_divpage"));
-//                                String innerText = ctl00_contentPlaceHolder1_divpage.getInnerText();
-//                                String page = innerText.split("/")[1].split("页")[0];
-//
-//
-//                                return false;
-//                            }
-//                        }
-//                )
-//                .getBrowser();
-
-//        BrowserView view = new BrowserView(browser);
-//        view.setVisible(true);
-//        view.setBounds(0, 0, 100, 100);
-//        frame.getContentPane().add(view);
-//        browser.loadURL("https://www.baidu.com/s?ie=UTF-8&wd=reterfit");
+        NewLoadHtmlRequestQueue.instance().put(new ManManBuyHotStartPageProcess(new ManManBuyCallBack() {
+            @Override
+            public void dataSuc(List<ProductInfoBean> productInfoBeans, String saveFilePath) {
+                System.out.println(productInfoBeans);
+            }
+        }));
 
 
         JTextArea jTextArea = new JTextArea();
@@ -381,4 +296,55 @@ public class MainActivity {
         frame.setVisible(true);
     }
 
+    @Override
+    public void applicationInitSuc() {
+
+
+//        browsers.config.ProductInfoBean[] productInfoBeans = new Gson().fromJson(
+//                FileUtils.readFile(FileUtils.createNewProductInfoFile("ALL")),
+//                browsers.config.ProductInfoBean[].class);
+//        System.out.println(productInfoBeans.length);
+//        for (browsers.config.ProductInfoBean product : productInfoBeans
+//                ) {
+//            int size = product.getImgSrcUrls().size();
+//            if (size < 2) {
+//                String buyUrl = product.getBuyUrl();
+//                System.out.println(product.getBuyUrl());
+//
+//        browser.addLoadListener(new LoadAdapter() {
+//            @Override
+//            public void onFinishLoadingFrame(FinishLoadingEvent event) {
+//                System.out.println(event.getValidatedURL());
+//                super.onFinishLoadingFrame(event);
+//            }
+//        });
+//         http://baicai.manmanbuy.com/Default_New.aspx?PageID=1&protype=jiukai&orderby=id
+//                NewLoadHtmlRequestQueue.init().put(new NewLoadHtmlRequestQueue.LoadHtmlProcess() {
+//                    @Override
+//                    public String getUrl() {
+//                        return "http://baicai.manmanbuy.com/cl_0_jiukai.aspx";
+//                    }
+//
+//                    @Override
+//                    public boolean canProcess(String url) {
+//                        return url.equals("http://baicai.manmanbuy.com/cl_0_jiukai.aspx");
+//                    }
+//
+//                    @Override
+//                    public boolean process(FinishLoadingEvent event, String resultUrl, DOMDocument domDocument, BrowsersInterface browser) {
+//                        // content ke-post  详情图
+//                        // J_AttrUL  产品参数，用于标签
+//                        return true;
+//                    }
+//                });
+//
+//
+//            }
+//        }
+//
+//        ManManBuyAllModel.init().addManManBuyProducts(Arrays.asList(productInfoBeans));
+//        TaoBaoTmallYHQImagProcess.startFindYHQAndPIC();
+//        NewLoadHtmlRequestQueue.init().put(new ManManBuyHotStartPageProcess());
+
+    }
 }

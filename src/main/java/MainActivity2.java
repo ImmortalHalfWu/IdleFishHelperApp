@@ -76,7 +76,7 @@ public class MainActivity2 {
 ////        AdbTest.tagTest();
 //
 ////        String jsonString = BrowserUtils.FileUtils.readFile(jsonFilePath);
-////        browsers.beans.ProductInfoBean[] productInfoBeans = new Gson().fromJson(jsonString, browsers.beans.ProductInfoBean[].class);
+////        browsers.config.ProductInfoBean[] productInfoBeans = new Gson().fromJson(jsonString, browsers.config.ProductInfoBean[].class);
 ////        this.productInfoBeans.addAll(Arrays.asList(productInfoBeans));
 //        init();
 //    }
@@ -104,7 +104,7 @@ public class MainActivity2 {
 //
 //
 //
-//        browser = MyBrowser.instance().getBrowser();
+//        browser = MyBrowser.init().getBrowser();
 ////        browser.setPopupHandler(popupParams -> {
 ////            browser.loadURL(popupParams.getURL());
 ////            return null;
@@ -461,7 +461,7 @@ public class MainActivity2 {
 //            DOMDocument document = browser.getDocument();
 //
 //            ProductInfoBean productInfoBean = productInfoBeans.get(yhqIndex);
-////            browsers.beans.ProductInfoBean productInfoBean = new browsers.beans.ProductInfoBean();
+////            browsers.config.ProductInfoBean productInfoBean = new browsers.config.ProductInfoBean();
 //
 //            if (document.findElement(By.className("coupons-data")) != null) {
 //                DOMElement element1 = document.findElement(By.className("coupons-data"));

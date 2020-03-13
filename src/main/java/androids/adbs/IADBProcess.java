@@ -8,9 +8,13 @@ public interface IADBProcess {
 
     boolean adbIdleFishIsInstance(String deviceAddr);
 
+    boolean adbKeyBoardIsInstance(String deviceAddr);
+
     boolean adbIdleFishUNInstance(String deviceAddr);
 
     boolean adbIdleFishInstance(String deviceAddr, String apkPath);
+
+    boolean adbKeyBoardInstance(String deviceAddr, String apkPath);
 
     boolean adbGetAndroidUIXML(String deviceAddr, String phonePath, String savePath) ;
 

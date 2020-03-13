@@ -1,6 +1,7 @@
 package browsers;
 
 import Utils.MLog;
+import Utils.TimeUtil;
 import browsers.beans.ProductInfoBean;
 import com.sun.istack.internal.Nullable;
 import com.teamdev.jxbrowser.chromium.dom.By;
@@ -233,9 +234,8 @@ public class BrowserUtils {
     }
 
 
-    private static SimpleDateFormat LOG_FORMAT = new SimpleDateFormat("YYYY/MM/dd HH:mm:ss.SSS");
     public static void log(Object info) {
-        MLog.logi(LOG_FORMAT.format(new Date()) + ":" + info.toString());
+        MLog.logi(TimeUtil.getTimeFormat() + ":" + info.toString());
     }
 
     public static void logLine() {

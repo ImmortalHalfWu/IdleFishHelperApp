@@ -78,7 +78,7 @@ public class BrowserQueue implements Runnable{
         if (isRunning) {
             return;
         }
-        ThreadPoolManager.instance().post(this);
+        ThreadPoolManager.init().post(this);
     }
 
 }

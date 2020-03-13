@@ -7,14 +7,6 @@ import java.util.ArrayList;
 
 public class AndroidUtils {
 
-    public final static String[] deviceAddress = {
-            "127.0.0.1:62001",
-            "127.0.0.1:21503",
-            "127.0.0.1:6555",
-            "127.0.0.1:53001",
-            "127.0.0.1:7555",
-    };
-
     public final static String[] postProductUITextIndex = {
             "关闭",
             "发布",
@@ -48,6 +40,16 @@ public class AndroidUtils {
             "确定",
     };
 
+
+
+    public final static String[] VM_ADDRESS = {
+            "127.0.0.1:62001",      // 夜神
+            "127.0.0.1:21503",      // 逍遥
+            "127.0.0.1:6555 ",      // 天天
+            "127.0.0.1:53001",      // 海马
+            "127.0.0.1:7555",      //  网易UU
+    };
+
     static java.util.List<String> getDeviceAddreByAdbResult(ADBProcess adbProcess) {
         ArrayList<String> arrayList = new ArrayList<>();
         String s = adbProcess.adbFindAllDevice();
@@ -67,7 +69,7 @@ public class AndroidUtils {
 
     static java.util.List<String> connectDeviceByAddress(java.util.List<String> deviceAddr, ADBProcess adbProcess) {
         for (String address :
-                AndroidUtils.deviceAddress) {
+                deviceAddr) {
             adbProcess.adbConnectDevice(address);
         }
 
@@ -82,5 +84,41 @@ public class AndroidUtils {
         MLog.logi(info.toString());
     }
 
+
+    public static void installFishApp(String deviceAddress) {
+        if (!isInstallFishApp(deviceAddress)) {
+            String path = deviceAddress.getClass().getResource("idleFish.apk").getPath();
+            if (!FileUtils.isEmpty(path)) {
+                ADBProcess.getInstance().adbIdleFishInstance(deviceAddress, path);
+            }
+        }
+
+    }
+
+    public static void installADBKeyBoardApp(String deviceAddress) {
+
+        if (!ADBProcess.getInstance().adbKeyBoardIsInstance(deviceAddress)) {
+            String path = deviceAddress.getClass().getResource("ADBKeyboard.apk").getPath();
+            if (!FileUtils.isEmpty(path)) {
+                ADBProcess.getInstance().adbKeyBoardInstance(deviceAddress, path);
+            }
+        }
+
+        if (ADBProcess.getInstance().adbKeyBoardIsInstance(deviceAddress)) {
+            ADBProcess.getInstance().adbChangeKeyBoard(deviceAddress);
+        }
+
+    }
+
+    public static boolean isInstallFishApp(String deviceAddress) {
+        return ADBProcess.getInstance().adbIdleFishIsInstance(deviceAddress);
+    }
+
+
+    public static void deleteFishApp(String deviceAddress) {
+        if (isInstallFishApp(deviceAddress)) {
+            ADBProcess.getInstance().adbIdleFishUNInstance(deviceAddress);
+        }
+    }
 
 }

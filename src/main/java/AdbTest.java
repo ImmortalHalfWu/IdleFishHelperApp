@@ -267,10 +267,10 @@ public class AdbTest {
 //        adb push /Users/huangchen/ideaProducts/imgs/O1CN01bBOmBh1XTEdS18d1W_\!\!2329842924.jpg /sdcard/1231.jpg
 //        am broadcast -a android.intent.action.MEDIA_SCANNER_SCAN_FILE -d file:///sdcard/1231.jpg
 
-        String jsonString = Utils.FileUtils.readFile(FileUtils.createNewProductInfoFile(deviceId));
+        String jsonString = Utils.FileUtils.readFile(FileUtils.createJsonFile(deviceId));
         ProductInfoBean[] productInfoBeans = new Gson().fromJson(jsonString, ProductInfoBean[].class);
 
-//        for (browsers.beans.ProductInfoBean bean :
+//        for (browsers.config.ProductInfoBean bean :
 //                productInfoBeans) {
         ProductInfoBean bean = productInfoBeans[0];
             List<String> imgSrcUrls = bean.getImgSrcUrls();

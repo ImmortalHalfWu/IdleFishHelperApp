@@ -18,6 +18,7 @@ class ADBUtils {
     private final static String ADB_START_IDLE_FISH_MAIN_ACTIVITY = " shell am start -n com.taobao.idlefish/com.taobao.fleamarket.home.activity.InitActivity";
     private final static String ADB_IDLE_FISH_IS_RUNNING = " shell dumpsys activity activities | grep ResumedActivity";
     private final static String ADB_IDLE_FISH_IS_INSTANCES = " shell pm list packages | grep com.taobao.idlefish";
+    private final static String ADB_KEY_BOARD_IS_INSTANCES = " shell pm list packages | grep adbKeyBoardIsInstance";
     private final static String ADB_IDLE_FISH_INSTANCES = " install -r";
     private final static String ADB_IDLE_FISH_UNINSTANCES = " uninstall com.taobao.idlefish";
     private final static String ADB_INPUT_TAP = " shell input tap ";
@@ -42,6 +43,9 @@ class ADBUtils {
     synchronized static boolean adbIdleFishIsInstance(String deviceAddr) {
         return runInCmd(ADB + deviceAddr + ADB_IDLE_FISH_IS_INSTANCES, "com.taobao.idlefish");
     }
+    synchronized static boolean adbKeyBoardIsInstance(String deviceAddr) {
+        return runInCmd(ADB + deviceAddr + ADB_KEY_BOARD_IS_INSTANCES, "com.android.adbkeyboard");
+    }
 
     synchronized static boolean adbIdleFishUNInstance(String deviceAddr) {
         return runInCmd(ADB + deviceAddr + ADB_IDLE_FISH_UNINSTANCES, "com.taobao.idlefish");
@@ -49,6 +53,10 @@ class ADBUtils {
 
     synchronized static boolean adbIdleFishInstance(String deviceAddr, String apkPath) {
         return runInCmd(ADB + deviceAddr + ADB_IDLE_FISH_INSTANCES + apkPath, "com.taobao.idlefish");
+    }
+
+    synchronized static boolean adbKeyBoardInstance(String deviceAddr, String apkPath) {
+        return runInCmd(ADB + deviceAddr + ADB_IDLE_FISH_INSTANCES + apkPath, "com.android.adbkeyboard");
     }
 
     synchronized static boolean adbGetAndroidUIXML(String deviceAddr, String phoneFileName, String saveFileName) {

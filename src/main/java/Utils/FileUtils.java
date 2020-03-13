@@ -19,6 +19,7 @@ public class FileUtils {
     private final static String DIR_PATH_ROOT = System.getProperty("user.dir");
     public final static String DIR_PATH_IMG = DIR_PATH_ROOT + File.separator + "imgs" + File.separator;
     public final static String DIR_PATH_XML = DIR_PATH_ROOT + File.separator + "xmls" + File.separator;
+    public final static String DIR_PATH_DEVICE = DIR_PATH_ROOT + File.separator + "devices" + File.separator;
     public final static String DIR_PATH_JSON = DIR_PATH_ROOT + File.separator + "jsons" + File.separator;
     public final static String DIR_PATH_WEB = DIR_PATH_ROOT + File.separator + "webs" + File.separator;
 
@@ -33,6 +34,7 @@ public class FileUtils {
         mkDir(DIR_PATH_XML);
         mkDir(DIR_PATH_JSON);
         mkDir(DIR_PATH_WEB);
+        mkDir(DIR_PATH_DEVICE);
     }
 
     /**
@@ -68,21 +70,121 @@ public class FileUtils {
         return arrayStr;
     }
 
+
+
+
+
+
     /**
      * @param deviceId 设备id
+     * @return 设备对应的设备数据文件路径
+     */
+    public static String createDeviceDir(String deviceId) {
+        String s = DIR_PATH_DEVICE + deviceId + File.separator;
+        mkDir(s);
+        return s;
+    }
+
+//    /**
+//     * @param deviceId 设备id
+//     * @return 设备对应的设备数据文件路径
+//     */
+//    public static String createDeviceXMLDir(String deviceId) {
+//        String deviceInfoFile = createDeviceDir(deviceId);
+//        String s = deviceInfoFile + "xmls" + File.separator;
+//        mkDir(s);
+//        return s;
+//    }
+//
+//
+//    /**
+//     * @param deviceId 设备id
+//     * @return 设备对应的新商品数据文件路径
+//     */
+//    public static String createDeviceJsonDir(String deviceId) {
+//        String deviceInfoFile = createDeviceDir(deviceId);
+//        String s = deviceInfoFile + "jsons" + File.separator;
+//        mkDir(s);
+//        return s;
+//    }
+//
+//    /**
+//     * @param deviceId 文件名称
+//     * @return 设备对应的新商品数据文件路径
+//     */
+//    public static String createDeviceImgsDir(String deviceId) {
+//        String deviceInfoFile = createDeviceDir(deviceId);
+//        String s = deviceInfoFile + "imgs" + File.separator;
+//        mkDir(s);
+//        return s;
+//    }
+
+
+    /**
+     * @param deviceId 文件名称
      * @return 设备对应的新商品数据文件路径
      */
-    public static String createNewProductInfoFile(String deviceId) {
-        String s = DIR_PATH_JSON + deviceId + FILE_NAME_NEW_PRODUCT_JSON;
+    public static String createDeviceConfigFile(String deviceId) {
+        String deviceInfoFile = createDeviceDir(deviceId);
+        String s = deviceInfoFile + "config" + ".json";
         mkFile(s);
         return s;
     }
 
     /**
+     * @param fileName 文件名称
+     * @return 设备对应的设备数据文件路径
+     */
+    public static String createXMLFile(String fileName) {
+        mkFile(DIR_PATH_XML + fileName);
+        return DIR_PATH_XML + fileName;
+    }
+
+
+    /**
+     * @param fileName 文件名称
+     * @return 设备对应的新商品数据文件路径
+     */
+    public static String createJsonFile(String fileName) {
+        mkFile(DIR_PATH_JSON + fileName);
+        return DIR_PATH_JSON + fileName;
+    }
+
+    /**
+     * @param fileName 文件名称
+     * @return 设备对应的新商品数据文件路径
+     */
+    public static String createImgFile(String fileName) {
+        mkFile(DIR_PATH_IMG + fileName);
+        return DIR_PATH_IMG + fileName;
+    }
+
+
+
+//    mkDir(DIR_PATH_IMG);
+//    mkDir(DIR_PATH_XML);
+//    mkDir(DIR_PATH_JSON);
+//    mkDir(DIR_PATH_WEB);
+//    mkDir(DIR_PATH_DEVICE);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
      * @param deviceId 设备id
      * @return 设备对应的web文件路径
      */
-    public static String createNewWebCacheFile(String deviceId) {
+    public static String createWebCacheDir(String deviceId) {
         String s = DIR_PATH_WEB + deviceId + File.separator;
         mkDir(s);
         return s;
@@ -476,7 +578,6 @@ public class FileUtils {
         }
     }
 
-    //https://blog.csdn.net/lovoo/article/details/77899627
     /**
      * 判断指定的文件是否存在。
      *
@@ -487,8 +588,8 @@ public class FileUtils {
         return new File(fileName).isFile();
     }
 
-    /* 得到文件后缀名
-     *
+    /**
+     * 得到文件后缀名
      * @param fileName
      * @return
      */

@@ -6,7 +6,7 @@ public class ThreadPoolManager {
 
     private static ThreadPoolManager threadPoolManager;
 
-    public static ThreadPoolManager instance() {
+    public static ThreadPoolManager init() {
         if (threadPoolManager == null) {
             synchronized (ThreadPoolManager.class) {
                 if (threadPoolManager == null) {
